@@ -16,7 +16,25 @@ namespace Zenject.Internal
         static ReflectionTypeAnalyzer()
         {
             _injectAttributeTypes = new HashSet<Type>();
+            ResetStaticValues();
+        }
+
+        public static ConstructorChoiceStrategy ConstructorChoiceStrategy 
+        {
+            get; set;
+        }
+
+        // Only keep the attribute in define to avoid code duplication in static constructor and ResetStaticValues method
+#if UNITY_EDITOR
+        // Required for disabling domain reload in enter the play mode feature. See: https://docs.unity3d.com/Manual/DomainReloading.html
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+#endif
+        static void ResetStaticValues()
+        {
+            // This gets called from static constructor so we won't check if enter the playmode option is enabled or not
+            _injectAttributeTypes.Clear();
             _injectAttributeTypes.Add(typeof(InjectAttributeBase));
+            ConstructorChoiceStrategy = ConstructorChoiceStrategy.InjectAttributeThenLeastArguments;
         }
 
         public static void AddCustomInjectAttribute<T>()
@@ -214,6 +232,11 @@ namespace Zenject.Internal
                     return explicitConstructor;
                 }
 
+                if (ConstructorChoiceStrategy == ConstructorChoiceStrategy.InjectAttribute)
+                {
+                    return null;
+                }
+
                 // If there is only one public constructor then use that
                 // This makes decent sense but is also necessary on WSA sometimes since the WSA generated
                 // constructor can sometimes be private with zero parameters
@@ -232,7 +255,15 @@ namespace Zenject.Internal
                 return constructors.OrderBy(x => x.GetParameters().Count()).First();
             }
 
-            return constructors[0];
+            var onlyConstructor = constructors[0];
+
+            if (ConstructorChoiceStrategy == ConstructorChoiceStrategy.InjectAttribute 
+                && !_injectAttributeTypes.Any(a => onlyConstructor.HasAttribute(a)))
+            {
+                return null;
+            }
+
+            return onlyConstructor;
         }
 
 #if UNITY_WSA && ENABLE_DOTNET && !UNITY_EDITOR

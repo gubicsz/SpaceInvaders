@@ -16,6 +16,19 @@ namespace Zenject.Internal
         static GameObject _disabledIndestructibleGameObject;
 #endif
 
+#if UNITY_EDITOR
+        // Required for disabling domain reload in enter the play mode feature. See: https://docs.unity3d.com/Manual/DomainReloading.html
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetStaticValues()
+        {
+            if (!UnityEditor.EditorSettings.enterPlayModeOptionsEnabled)
+            {
+                return;
+            }
+            
+            _disabledIndestructibleGameObject = null;
+        }
+#endif
         // Due to the way that Unity overrides the Equals operator,
         // normal null checks such as (x == null) do not always work as
         // expected

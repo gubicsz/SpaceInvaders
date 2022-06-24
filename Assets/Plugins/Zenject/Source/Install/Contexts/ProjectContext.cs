@@ -33,7 +33,7 @@ namespace Zenject
         ReflectionBakingCoverageModes _buildsReflectionBakingCoverageMode = ReflectionBakingCoverageModes.FallbackToDirectReflection;
 
         [SerializeField]
-        ZenjectSettings _settings = null;
+        ZenjectSettings _settings = ZenjectSettings.Default;
 
         DiContainer _container;
 
@@ -170,6 +170,24 @@ namespace Zenject
             }
         }
 
+#if UNITY_EDITOR
+        // Required for disabling domain reload in enter the play mode feature. See: https://docs.unity3d.com/Manual/DomainReloading.html
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetStaticValues()
+        {
+            if (!UnityEditor.EditorSettings.enterPlayModeOptionsEnabled)
+            {
+                return;
+            }
+            
+            PreInstall = null;
+            PostInstall = null;
+            PreResolve = null;
+            PostResolve = null;
+            _instance = null;
+        }
+#endif
+
         public bool ParentNewObjectsUnderContext
         {
             get { return _parentNewObjectsUnderContext; }
@@ -181,8 +199,11 @@ namespace Zenject
             // Do nothing - Initialize occurs in Instance property
         }
 
-        public void Awake()
+        protected override void Awake()
         {
+            // We don't call base.Awake here because ProjectContext gets instantiated every time. 
+            
+            
             if (Application.isPlaying)
                 // DontDestroyOnLoad can only be called when in play mode and otherwise produces errors
                 // ProjectContext is created during design time (in an empty scene) when running validation
@@ -195,6 +216,9 @@ namespace Zenject
 
         void Initialize()
         {
+            // Do this as early as possible before any type analysis occurs
+            ReflectionTypeAnalyzer.ConstructorChoiceStrategy = _settings.ConstructorChoiceStrategy;
+
             Assert.IsNull(_container);
 
             if (Application.isEditor)
@@ -274,7 +298,7 @@ namespace Zenject
                 _container.DefaultParent = null;
             }
 
-            _container.Settings = _settings ?? ZenjectSettings.Default;
+            _container.Settings = _settings;
 
             _container.Bind<ZenjectSceneLoader>().AsSingle();
 

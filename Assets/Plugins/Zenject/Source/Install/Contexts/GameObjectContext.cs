@@ -41,14 +41,28 @@ namespace Zenject
         }
 
         [Inject]
-        public void Construct(
-            DiContainer parentContainer)
+        public void Construct(DiContainer parentContainer)
         {
             Assert.IsNull(_parentContainer);
             _parentContainer = parentContainer;
 
             Initialize();
         }
+
+#if UNITY_EDITOR
+        protected override void ResetInstanceFields()
+        {
+            base.ResetInstanceFields();
+            
+            PreInstall = null;
+            PostInstall = null;
+            PreResolve = null;
+            PostResolve = null;
+            _hasInstalled = false;
+            _parentContainer = null;
+            _container = null;
+        }
+#endif
 
         protected override void RunInternal()
         {

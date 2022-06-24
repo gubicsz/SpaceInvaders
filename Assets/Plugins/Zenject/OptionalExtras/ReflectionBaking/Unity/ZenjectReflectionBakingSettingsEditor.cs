@@ -203,7 +203,7 @@ namespace Zenject.ReflectionBaking
                 {
                     SerializedProperty current = listProperty.GetArrayElementAtIndex(k);
 
-                    if (path == current.stringValue)
+                    if (path == current.stringValue.Replace("/", "\\"))
                     {
                         foundMatch = true;
                         break;

@@ -89,7 +89,37 @@ namespace Zenject.Internal
                 Path.Combine(folderPath, DefaultSceneContractConfig.ResourcePath + ".asset"), config);
         }
 
-        [MenuItem("Assets/Create/Zenject/Scriptable Object Installer", false, 1)]
+        [MenuItem("Assets/Create/Zenject/Installer", false, 1)]
+        public static void CreateInstaller()
+        {
+            AddCSharpClassTemplate("Installer", "UntitledInstaller",
+                  "using UnityEngine;"
+                + "\nusing Zenject;"
+                + "\n"
+                + "\npublic class CLASS_NAME : Installer<CLASS_NAME>"
+                + "\n{"
+                + "\n    public override void InstallBindings()"
+                + "\n    {"
+                + "\n    }"
+                + "\n}");
+        }
+
+        [MenuItem("Assets/Create/Zenject/Mono Installer", false, 2)]
+        public static void CreateMonoInstaller()
+        {
+            AddCSharpClassTemplate("Mono Installer", "UntitledInstaller",
+                  "using UnityEngine;"
+                + "\nusing Zenject;"
+                + "\n"
+                + "\npublic class CLASS_NAME : MonoInstaller"
+                + "\n{"
+                + "\n    public override void InstallBindings()"
+                + "\n    {"
+                + "\n    }"
+                + "\n}");
+        }
+
+        [MenuItem("Assets/Create/Zenject/Scriptable Object Installer", false, 3)]
         public static void CreateScriptableObjectInstaller()
         {
             AddCSharpClassTemplate("Scriptable Object Installer", "UntitledInstaller",
@@ -105,34 +135,12 @@ namespace Zenject.Internal
                 + "\n}");
         }
 
-        [MenuItem("Assets/Create/Zenject/Mono Installer", false, 1)]
-        public static void CreateMonoInstaller()
+        [MenuItem("Assets/Create/Zenject/Composite Scriptable Object Installer", false, 4)]
+        public static void CreateCompositeScriptableObjectInstaller()
         {
-            AddCSharpClassTemplate("Mono Installer", "UntitledInstaller",
-                  "using UnityEngine;"
-                + "\nusing Zenject;"
-                + "\n"
-                + "\npublic class CLASS_NAME : MonoInstaller"
-                + "\n{"
-                + "\n    public override void InstallBindings()"
-                + "\n    {"
-                + "\n    }"
-                + "\n}");
-        }
-
-        [MenuItem("Assets/Create/Zenject/Installer", false, 1)]
-        public static void CreateInstaller()
-        {
-            AddCSharpClassTemplate("Installer", "UntitledInstaller",
-                  "using UnityEngine;"
-                + "\nusing Zenject;"
-                + "\n"
-                + "\npublic class CLASS_NAME : Installer<CLASS_NAME>"
-                + "\n{"
-                + "\n    public override void InstallBindings()"
-                + "\n    {"
-                + "\n    }"
-                + "\n}");
+            ProjectWindowUtil.CreateAsset(
+                asset: ScriptableObject.CreateInstance<CompositeScriptableObjectInstaller>(),
+                pathName: "CompositeScriptableObjectInstaller.asset");
         }
 
         [MenuItem("Assets/Create/Zenject/Editor Window", false, 20)]

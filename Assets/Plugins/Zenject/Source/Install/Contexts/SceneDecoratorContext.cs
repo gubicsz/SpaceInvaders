@@ -93,6 +93,16 @@ namespace Zenject
             }
         }
 
+#if UNITY_EDITOR
+        protected override void ResetInstanceFields()
+        {
+            base.ResetInstanceFields();
+            
+            _injectableMonoBehaviours.Clear();
+            _container = null;
+        }
+#endif
+
         public void InstallDecoratorSceneBindings()
         {
             _container.Bind<SceneDecoratorContext>().FromInstance(this);

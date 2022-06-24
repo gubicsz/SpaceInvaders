@@ -15,6 +15,10 @@ namespace Zenject
     {
         static Dictionary<string, TimerInfo> _timers = new Dictionary<string, TimerInfo>();
 
+#if UNITY_EDITOR
+        // Required for disabling domain reload in enter the play mode feature. See: https://docs.unity3d.com/Manual/DomainReloading.html
+        [UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.SubsystemRegistration)]
+#endif
         public static void ResetAll()
         {
             foreach (var timer in _timers.Values)

@@ -66,7 +66,9 @@ namespace Zenject.ReflectionBaking
 
             foreach (var typeDef in allTypes)
             {
-                if (_namespaceRegexes.Any() && !_namespaceRegexes.Any(x => x.IsMatch(typeDef.FullName)))
+                // Zenject namespace gets automatically added to the list of namespaces. 
+                // So to check if user added any other namespaces, we need to compare namespace count with 1
+                if (_namespaceRegexes.Count > 1 && !_namespaceRegexes.Any(x => x.IsMatch(typeDef.FullName)))
                 {
                     continue;
                 }

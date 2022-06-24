@@ -10,7 +10,7 @@ namespace Zenject.Tests
         public IEnumerator TestScene()
         {
             yield return LoadScene("TestSceneContextEvents");
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(1.0f);
         }
     }
 }
