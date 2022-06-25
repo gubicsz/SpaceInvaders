@@ -12,3 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eedfa04f22f95d8488c856d3d02b46d3, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
+  _player:
+    Lives: 3
+    Invulnerability: 3
+    Speed: 5
+    FireRate: 0.5
+    SpawnPosition: {x: 0, y: 0, z: -10}
+  _enemy:
+    Rows: 5
+    Columns: 11
+    Width: 2.5
+    Height: 2
+    FireRate: 0.5
+    SpeedHorizontal: 1
+    SpeedVertical: 1
+  _projectile:
+    Speed: 15
+  _level:
+    Bounds: {x: 19, y: 0, z: 10}

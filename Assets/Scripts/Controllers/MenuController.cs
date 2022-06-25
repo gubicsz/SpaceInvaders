@@ -7,14 +7,10 @@ namespace SpaceInvaders
 {
     public class MenuController : MonoBehaviour
     {
-        [SerializeField]
-        Button _buttonStart;
+        [SerializeField] Button _buttonStart;
+        [SerializeField] Button _buttonScores;
 
-        [SerializeField]
-        Button _buttonScores;
-
-        [Inject]
-        GameStateModel _gameState;
+        [Inject] GameStateModel _gameState;
 
         private void Start()
         {

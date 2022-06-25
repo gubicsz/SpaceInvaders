@@ -7,18 +7,51 @@ namespace SpaceInvaders
     {
         public override void InstallBindings()
         {
-            Container.Bind<GameModel>().AsSingle().NonLazy();
+            // Game
             Container.Bind<GameStateModel>().AsSingle();
-            Container.Bind<ScoresModel>().AsSingle();
             Container.Bind<GameplayModel>().AsSingle();
+            Container.Bind<ScoresModel>().AsSingle();
 
-            Container.Bind<PlayerModel>().AsSingle();//TODO: FACTORY?
-
-            Container.BindInterfacesAndSelfTo<AssetLoader>().AsSingle();
+            // Services
+            Container.BindInterfacesAndSelfTo<AddressablesService>().AsSingle();
             Container.BindInterfacesAndSelfTo<StorageService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<InputService>().AsSingle();
 
-            //Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
-            //Container.BindFactory<Object, EnemyModel, EnemyModel.Factory>().FromFactory<PrefabFactory<EnemyModel>>();
+            // Player
+            Container.Bind<PlayerModel>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerSpawner>().AsSingle();
+            Container.BindFactory<Object, PlayerController, PlayerController.Factory>().FromFactory<PrefabFactory<PlayerController>>();
+
+            // Enemies
+            Container.Bind<EnemyModel>().AsTransient();
+            Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
+            Container.BindInterfacesAndSelfTo<EnemyMover>().AsSingle();
+            Container.BindFactory<Object, EnemyController, EnemyController.Factory>().FromFactory<PrefabFactory<EnemyController>>();
+
+            // Projectiles
+            Container.Bind<ProjectileModel>().AsTransient();
+            Container.BindInterfacesAndSelfTo<ProjectileSpawner>().AsSingle();
+            // todo: mover
+            Container.BindFactory<Object, ProjectileController, ProjectileController.Factory>().FromFactory<PrefabFactory<ProjectileController>>();
+
+            // TODO
+            //Container.BindAsync<GameObject>().FromMethod(async () =>
+            //{
+            //    try
+            //    {
+            //        var addressables = Container.Resolve<AddressablesService>();
+            //        var locations = await Addressables.LoadResourceLocationsAsync("Player").ToUniTask();
+            //        var go = await Addressables.LoadAssetAsync<GameObject>(locations[0]).ToUniTask();
+            //        //go = Container.InstantiatePrefab(go);
+            //        //var go = await Addressables.InstantiateAsync(locations[0]).ToUniTask();
+            //        return go;
+            //    }
+            //    catch (InvalidKeyException)
+            //    {
+
+            //    }
+            //    return null;
+            //}).AsCached();
         }
     }
 }

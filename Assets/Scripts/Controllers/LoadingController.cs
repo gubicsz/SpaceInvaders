@@ -7,8 +7,7 @@ namespace SpaceInvaders
 {
     public class LoadingController : MonoBehaviour
     {
-        [SerializeField]
-        TextMeshProUGUI _labelLoading;
+        [SerializeField] TextMeshProUGUI _labelLoading;
 
         string[] _loadingTexts = new string[4]
         {

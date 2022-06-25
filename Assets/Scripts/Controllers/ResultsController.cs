@@ -8,20 +8,12 @@ namespace SpaceInvaders
 {
     public class ResultsController : MonoBehaviour
     {
-        [SerializeField]
-        Button _buttonBack;
+        [SerializeField] Button _buttonBack;
+        [SerializeField] TextMeshProUGUI _labelScore;
+        [SerializeField] TextMeshProUGUI _labelWaves;
 
-        [SerializeField]
-        TextMeshProUGUI _labelScore;
-
-        [SerializeField]
-        TextMeshProUGUI _labelWaves;
-
-        [Inject]
-        GameStateModel _gameState;
-
-        [Inject]
-        GameplayModel _gameplay;
+        [Inject] GameStateModel _gameState;
+        [Inject] GameplayModel _gameplay;
 
         private void Start()
         {
@@ -32,7 +24,7 @@ namespace SpaceInvaders
 
             // Update labels based on model
             _gameplay.CurrentScore.SubscribeToText(_labelScore).AddTo(this);
-            _gameplay.CurrentWave.SubscribeToText(_labelWaves).AddTo(this);
+            _gameplay.CurrentWave.SubscribeToText(_labelWaves, (wave) => (wave - 1).ToString()).AddTo(this);
         }
     }
 }

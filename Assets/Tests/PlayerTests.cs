@@ -1,8 +1,6 @@
-using Zenject;
 using NUnit.Framework;
 using SpaceInvaders;
-using System.Threading.Tasks;
-using UniRx;
+using Zenject;
 
 [TestFixture]
 public class PlayerTests : ZenjectUnitTestFixture
@@ -11,7 +9,17 @@ public class PlayerTests : ZenjectUnitTestFixture
     public void CommonInstall()
     {
         Container.Bind<PlayerConfig>().AsSingle();
+        Container.Bind<LevelConfig>().AsSingle();
         Container.Bind<PlayerModel>().AsSingle();
+    }
+
+    [Test]
+    public void PlayerShouldStartAtSpawnPosition()
+    {
+        var player = Container.Resolve<PlayerModel>();
+        var config = Container.Resolve<PlayerConfig>();
+
+        Assert.That(player.Position.Value == config.SpawnPosition);
     }
 
     [Test]

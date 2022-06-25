@@ -7,14 +7,10 @@ namespace SpaceInvaders
 {
     public class ScoresController : MonoBehaviour
     {
-        [SerializeField]
-        Button _buttonBack;
+        [SerializeField] Button _buttonBack;
 
-        [Inject]
-        GameStateModel _gameState;
-
-        [Inject]
-        ScoresModel _scores;
+        [Inject] GameStateModel _gameState;
+        [Inject] ScoresModel _scores;
 
         private void Start()
         {
