@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: GUI
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: fe0c33b4c9be5884ca73774c940a8794, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 273c93002545f964bb48628bf309f357, type: 3}
+  - {fileID: 21300000, guid: 9426f991311e48f45a746f9eb026232f, type: 3}
+  - {fileID: 21300000, guid: 4b969a82fa1fdf6438e61a3d80de2fe1, type: 3}
+  - {fileID: 21300000, guid: 64bb10238b18b2d45bfd7a0629386e17, type: 3}
+  - {fileID: 21300000, guid: dbac56552a6ca8d46a5ec8897e5a4b3e, type: 3}
+  - {fileID: 21300000, guid: ebc863f57cc7cf241866b4c74df60b98, type: 3}
+  - {fileID: 21300000, guid: 84b27b06907da46428ae5aff9e80fa73, type: 3}
+  - {fileID: 21300000, guid: 289ab717f2aa5984e9310f85a0657984, type: 3}
+  - {fileID: 21300000, guid: 0fb3ee57c1b8e3640b069cd8ce209bd6, type: 3}
+  - {fileID: 21300000, guid: a5381428eea72bd4f891f74bea026467, type: 3}
+  - {fileID: 21300000, guid: a5cdfbe9f83c1d44a8397044539ba89d, type: 3}
+  - {fileID: 21300000, guid: bb90119a963e4264abe99bd06c2788dc, type: 3}
+  - {fileID: 21300000, guid: 85d8b01ed03b53549b92ce7666af123e, type: 3}
+  - {fileID: 21300000, guid: a4d2bcce58fa2764e883112ce2885d45, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Btn_Game_h
+  - Btn_Menu_h
+  - Btn_Game_p
+  - SpaceInvadersLogo
+  - IconScore
+  - IconWave
+  - IconRight
+  - IconLife
+  - IconExit
+  - IconLeft
+  - IconFire
+  - Btn_Menu_n
+  - Btn_Game_n
+  - Btn_Menu_p
+  m_RenderDataMap: {}
+  m_Tag: GUI
+  m_IsVariant: 0

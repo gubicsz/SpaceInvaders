@@ -5,13 +5,13 @@ namespace SpaceInvaders
 {
     public class EnemySpawner
     {
-        private EnemyController.Factory _factory;
+        private EnemyPresenter.Factory _factory;
         private EnemyConfig _enemyConfig;
         private AddressablesService _addressables;
 
-        private List<EnemyController> _enemies = new List<EnemyController>();
+        private List<EnemyPresenter> _enemies = new List<EnemyPresenter>();
 
-        public EnemySpawner(EnemyController.Factory factory, EnemyConfig enemyConfig, AddressablesService addressables)
+        public EnemySpawner(EnemyPresenter.Factory factory, EnemyConfig enemyConfig, AddressablesService addressables)
         {
             // Set references
             _factory = factory;
@@ -19,7 +19,7 @@ namespace SpaceInvaders
             _addressables = addressables;
         }
 
-        public IReadOnlyList<EnemyController> Enemies => _enemies.AsReadOnly();
+        public IReadOnlyList<EnemyPresenter> Enemies => _enemies.AsReadOnly();
 
         public void SpawnAll()
         {
@@ -38,7 +38,7 @@ namespace SpaceInvaders
                 for (int row = 0; row < _enemyConfig.Rows; row++)
                 {
                     // Spawn and init enemy
-                    EnemyController enemy = _factory.Create(prefab);
+                    EnemyPresenter enemy = _factory.Create(prefab);
                     int type = row <= 1 ? 0 : row <= 3 ? 1 : 2;
                     enemy.Init(type, row, col);
                     _enemies.Add(enemy);
@@ -58,7 +58,7 @@ namespace SpaceInvaders
             _enemies.Clear();
         }
 
-        public void Despawn(EnemyController enemy)
+        public void Despawn(EnemyPresenter enemy)
         {
             // Handle error
             if (enemy == null)

@@ -5,19 +5,19 @@ namespace SpaceInvaders
 {
     public class ProjectileSpawner
     {
-        private ProjectileController.Factory _factory;
+        private ProjectilePresenter.Factory _factory;
         private AddressablesService _addressables;
 
-        private List<ProjectileController> _projectiles = new List<ProjectileController>();
+        private List<ProjectilePresenter> _projectiles = new List<ProjectilePresenter>();
 
-        public ProjectileSpawner(ProjectileController.Factory factory, AddressablesService addressables)
+        public ProjectileSpawner(ProjectilePresenter.Factory factory, AddressablesService addressables)
         {
             // Set references
             _factory = factory;
             _addressables = addressables;
         }
 
-        public void Spawn(Vector3 position, Vector3 direction)
+        public void Spawn(Vector3 position, Vector3 direction, float speed)
         {
             // Try to get projectile prefab
             var prefab = _addressables.GetGameObject("Projectile");
@@ -29,12 +29,12 @@ namespace SpaceInvaders
             }
 
             // Spawn projectile
-            ProjectileController projectile = _factory.Create(prefab);
-            projectile.Init(position, direction);
+            ProjectilePresenter projectile = _factory.Create(prefab);
+            projectile.Init(position, direction, speed);
             _projectiles.Add(projectile);
         }
 
-        public void Despawn(ProjectileController projectile)
+        public void Despawn(ProjectilePresenter projectile)
         {
             // Handle error
             if (projectile == null || !_projectiles.Contains(projectile))

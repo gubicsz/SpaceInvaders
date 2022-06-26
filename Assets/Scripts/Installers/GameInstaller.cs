@@ -20,38 +20,18 @@ namespace SpaceInvaders
             // Player
             Container.Bind<PlayerModel>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerSpawner>().AsSingle();
-            Container.BindFactory<Object, PlayerController, PlayerController.Factory>().FromFactory<PrefabFactory<PlayerController>>();
+            Container.BindFactory<Object, PlayerPresenter, PlayerPresenter.Factory>().FromFactory<PrefabFactory<PlayerPresenter>>();
 
             // Enemies
             Container.Bind<EnemyModel>().AsTransient();
             Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
-            Container.BindInterfacesAndSelfTo<EnemyMover>().AsSingle();
-            Container.BindFactory<Object, EnemyController, EnemyController.Factory>().FromFactory<PrefabFactory<EnemyController>>();
+            Container.BindInterfacesAndSelfTo<EnemiesManager>().AsSingle();
+            Container.BindFactory<Object, EnemyPresenter, EnemyPresenter.Factory>().FromFactory<PrefabFactory<EnemyPresenter>>();
 
             // Projectiles
             Container.Bind<ProjectileModel>().AsTransient();
             Container.BindInterfacesAndSelfTo<ProjectileSpawner>().AsSingle();
-            // todo: mover
-            Container.BindFactory<Object, ProjectileController, ProjectileController.Factory>().FromFactory<PrefabFactory<ProjectileController>>();
-
-            // TODO
-            //Container.BindAsync<GameObject>().FromMethod(async () =>
-            //{
-            //    try
-            //    {
-            //        var addressables = Container.Resolve<AddressablesService>();
-            //        var locations = await Addressables.LoadResourceLocationsAsync("Player").ToUniTask();
-            //        var go = await Addressables.LoadAssetAsync<GameObject>(locations[0]).ToUniTask();
-            //        //go = Container.InstantiatePrefab(go);
-            //        //var go = await Addressables.InstantiateAsync(locations[0]).ToUniTask();
-            //        return go;
-            //    }
-            //    catch (InvalidKeyException)
-            //    {
-
-            //    }
-            //    return null;
-            //}).AsCached();
+            Container.BindFactory<Object, ProjectilePresenter, ProjectilePresenter.Factory>().FromFactory<PrefabFactory<ProjectilePresenter>>();
         }
     }
 }

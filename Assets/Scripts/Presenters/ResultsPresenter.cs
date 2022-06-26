@@ -1,0 +1,46 @@
+using System;
+using TMPro;
+using UniRx;
+using UnityEngine;
+using UnityEngine.UI;
+using Zenject;
+
+namespace SpaceInvaders
+{
+    public class ResultsPresenter : MonoBehaviour
+    {
+        [SerializeField] Button _buttonBack;
+        [SerializeField] TextMeshProUGUI _labelScore;
+        [SerializeField] TextMeshProUGUI _labelWaves;
+
+        [Inject] GameStateModel _gameState;
+        [Inject] GameplayModel _gameplay;
+        [Inject] ScoresModel _scores;
+
+        private void Start()
+        {
+            // Return to main menu
+            _buttonBack.OnClickAsObservable()
+                .Subscribe(_ => _gameState.State.Value = GameState.Menu)
+                .AddTo(this);
+
+            // Update labels based on model
+            _gameplay.CurrentScore.SubscribeToText(_labelScore).AddTo(this);
+            _gameplay.CurrentWave.SubscribeToText(_labelWaves, (wave) => (wave - 1).ToString()).AddTo(this);
+
+            // Add score to the scoreboard if it's greater than zero
+            _gameState.State.Where(state => state == GameState.Results && _gameplay.CurrentScore.Value > 0).Subscribe(_ =>
+            {
+                // Add new score item
+                _scores.Add(new ScoreItem()
+                {
+                    Score = _gameplay.CurrentScore.Value,
+                    Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm"),
+                });
+
+                // Save scores to the device
+                _scores.Save();
+            }).AddTo(this);
+        }
+    }
+}

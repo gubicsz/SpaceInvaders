@@ -13,6 +13,7 @@ namespace SpaceInvaders
         public float Invulnerability = 3.0f;
         public float Speed = 5.0f;
         public float FireRate = 0.5f;
+        public float ProjectileSpeed = 15.0f;
         public Vector3 SpawnPosition = new Vector3(0f, 0f, -10f);
     }
 
@@ -38,11 +39,10 @@ namespace SpaceInvaders
         public ReactiveProperty<int> Lives { get; private set; }
         public ReactiveProperty<bool> IsInvulnerable { get; private set; }
         public ReadOnlyReactiveProperty<bool> IsDead { get; private set; }
-        public ReactiveCommand DamageCommand { get; private set; }//todo: refactor
+        public float ShotTime { get; private set; }
 
         private PlayerConfig _playerConfig;
         private LevelConfig _levelConfig;
-        private float _lastShot;
 
         public PlayerModel(PlayerConfig playerConfig, LevelConfig levelConfig)
         {
@@ -54,29 +54,10 @@ namespace SpaceInvaders
             Position = new Vector3ReactiveProperty(_playerConfig.SpawnPosition);
             Lives = new ReactiveProperty<int>(_playerConfig.Lives);
             IsInvulnerable = new ReactiveProperty<bool>(false);
+            ShotTime = float.MinValue;
 
             // The player is dead when he is out of lives
             IsDead = Lives.Select(lives => lives <= 0).ToReadOnlyReactiveProperty();
-
-            // TODO: refactor damage
-            // The player can only be damaged when he is alive and vulnerable
-            DamageCommand = IsDead.CombineLatest(IsInvulnerable, 
-                (isDead, isInvulnerable) => !isDead && !isInvulnerable).ToReactiveCommand();
-
-            // Handle player hit
-            DamageCommand.Subscribe(async _ =>
-            {
-                // Reduce lives and start invulnerability
-                Lives.Value--;
-                IsInvulnerable.Value = true;
-
-                // Stop invulnerability in X seconds
-                await UniTask.Delay(TimeSpan.FromSeconds(_playerConfig.Invulnerability));
-                IsInvulnerable.Value = false;
-
-                //Observable.Timer(TimeSpan.FromSeconds(_config.Invulnerability))
-                //    .Subscribe(_ => IsInvulnerable.Value = false).AddTo(this);//todo
-            }).AddTo(this);
         }
 
         public void Reset()
@@ -85,7 +66,7 @@ namespace SpaceInvaders
             Position.Value = _playerConfig.SpawnPosition;
             Lives.Value = _playerConfig.Lives;
             IsInvulnerable.Value = false;
-            _lastShot = 0f;
+            ShotTime = float.MinValue;
         }
 
         public void Move(float horizontal, float dt)
@@ -106,19 +87,33 @@ namespace SpaceInvaders
         public bool Shoot(float currentTime)
         {
             // Prevent shooting based on fire rate
-            if (currentTime < (_lastShot + _playerConfig.FireRate))
+            if (currentTime < (ShotTime + _playerConfig.FireRate))
             {
                 return false;
             }
 
             // Register last shot time
-            _lastShot = currentTime;
+            ShotTime = currentTime;
             return true;
         }
 
-        public void Damage()
+        public async UniTask<bool> DamageAsync()
         {
-            // TODO
+            // Do nothing if the player is dead or invulnerable
+            if (IsDead.Value || IsInvulnerable.Value)
+            {
+                return false;
+            }
+
+            // Reduce lives and start invulnerability
+            Lives.Value--;
+            IsInvulnerable.Value = true;
+
+            // Stop invulnerability in X seconds
+            await UniTask.Delay(TimeSpan.FromSeconds(_playerConfig.Invulnerability));
+            IsInvulnerable.Value = false;
+
+            return true;
         }
     }
 }

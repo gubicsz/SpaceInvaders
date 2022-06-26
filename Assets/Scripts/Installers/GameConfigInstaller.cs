@@ -8,14 +8,13 @@ namespace SpaceInvaders
     {
         [SerializeField] PlayerConfig _player;
         [SerializeField] EnemyConfig _enemy;
-        [SerializeField] ProjectileConfig _projectile;
         [SerializeField] LevelConfig _level;
 
         public override void InstallBindings()
         {
+            // Configs
             Container.BindInstances(_player);
             Container.BindInstances(_enemy);
-            Container.BindInstances(_projectile);
             Container.BindInstances(_level);
         }
     }

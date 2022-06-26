@@ -4,11 +4,11 @@ namespace SpaceInvaders
 {
     public class PlayerSpawner
     {
-        private PlayerController.Factory _factory;
-        private PlayerController _player;
+        private PlayerPresenter.Factory _factory;
+        private PlayerPresenter _player;
         private AddressablesService _addressables;
 
-        public PlayerSpawner(PlayerController.Factory factory, AddressablesService addressables)
+        public PlayerSpawner(PlayerPresenter.Factory factory, AddressablesService addressables)
         {
             _factory = factory;
             _addressables = addressables;
