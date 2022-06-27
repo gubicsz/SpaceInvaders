@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Linq;
 using UniRx;
 using UnityEngine;
@@ -9,6 +10,7 @@ namespace SpaceInvaders
     {
         [Inject] IAssetService _assetService;
         [Inject] IEnemiesManager _enemiesManager;
+        [Inject] IAudioService _audioService;
         [Inject] GameStateModel _gameState;
         [Inject] GameplayModel _gameplay;
         [Inject] ScoresModel _scores;
@@ -23,12 +25,8 @@ namespace SpaceInvaders
             // Handle game loading
             _gameState.State.Where(state => state == GameState.Loading).Subscribe(async state =>
             {
-                // Load addressable assets
-                await _assetService.Load<GameObject>("Enemy1");
-                await _assetService.Load<GameObject>("Enemy2");
-                await _assetService.Load<GameObject>("Enemy3");
-                await _assetService.Load<GameObject>("Player");
-                await _assetService.Load<GameObject>("Projectile");
+                // Load assets
+                await LoadAssetsAsync();
 
                 // Load scores
                 _scores.Load();
@@ -75,6 +73,9 @@ namespace SpaceInvaders
                     // Spawn projectile
                     Vector3 spawnPos = enemyToShoot.transform.position + Vector3.back * 1.5f;
                     _projectileSpawner.Spawn(spawnPos, Vector3.back, _enemyConfig.ProjectileSpeed);
+
+                    // Play blaster sfx
+                    _audioService.PlaySfx(Constants.Audio.Blaster, 0.25f);
                 }
 
                 // End game when the enemy with the lowest vertical position gets out of bounds
@@ -85,6 +86,21 @@ namespace SpaceInvaders
                     _gameState.State.Value = GameState.Results;
                 }
             }).AddTo(this);
+        }
+
+        private async UniTask LoadAssetsAsync()
+        {
+            // Load objects
+            await _assetService.Load<GameObject>(Constants.Objects.Enemy1);
+            await _assetService.Load<GameObject>(Constants.Objects.Enemy2);
+            await _assetService.Load<GameObject>(Constants.Objects.Enemy3);
+            await _assetService.Load<GameObject>(Constants.Objects.Player);
+            await _assetService.Load<GameObject>(Constants.Objects.Projectile);
+
+            // Load audio
+            await _assetService.Load<AudioClip>(Constants.Audio.Blaster);
+            await _assetService.Load<AudioClip>(Constants.Audio.Explosion);
+            await _assetService.Load<AudioClip>(Constants.Audio.Click);
         }
 
         private void OnStateTransition(Pair<GameState> transition)

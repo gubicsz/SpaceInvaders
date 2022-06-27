@@ -28,7 +28,7 @@ namespace SpaceInvaders
             // Try to get enemy prefabs
             for (int i = 0; i < 3; i++)
             {
-                string key = $"Enemy{i + 1}";
+                string key = $"{Constants.Objects.Enemy}{i + 1}";
                 var prefab = _assetService.Get<GameObject>(key);
 
                 // Stop spawning if an enemy is not found

@@ -11,6 +11,7 @@ namespace SpaceInvaders
 
         [Inject] ProjectileModel _projectile;
         [Inject] ProjectileSpawner _projectileSpawner;
+        [Inject] IAudioService _audioService;
 
         public void Init(Vector3 position, Vector3 direction, float speed)
         {
@@ -41,6 +42,9 @@ namespace SpaceInvaders
             {
                 if (collider.TryGetComponent(out ProjectilePresenter projectile))
                 {
+                    // Play explosion sfx
+                    _audioService.PlaySfx(Constants.Audio.Explosion, 0.25f);
+
                     // Despawn both projectiles
                     _projectileSpawner.Despawn(projectile);
                     _projectileSpawner.Despawn(this);

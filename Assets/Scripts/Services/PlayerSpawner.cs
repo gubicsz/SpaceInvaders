@@ -17,7 +17,7 @@ namespace SpaceInvaders
         public void Spawn()
         {
             // Try to get player prefab
-            var prefab = _assetService.Get<GameObject>("Player");
+            var prefab = _assetService.Get<GameObject>(Constants.Objects.Player);
 
             // Handle error
             if (prefab == null)

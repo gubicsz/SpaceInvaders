@@ -20,23 +20,43 @@ MonoBehaviour:
   - m_GUID: e3b45ea78eab92b47ab84b13c33cafe4
     m_Address: Enemy1
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - objects
   - m_GUID: c2a70167f1e4fc143a655997de242bba
     m_Address: Player
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - objects
   - m_GUID: 270af1a3357c6594db004add0c76142d
     m_Address: Projectile
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - objects
   - m_GUID: 2fb254b7188373742a5d04abeec7401a
     m_Address: Enemy2
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - objects
   - m_GUID: c1896beece8e5b84f821455e4b0b244a
     m_Address: Enemy3
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - objects
+  - m_GUID: b409390832b3a5940bc80b24711da2a9
+    m_Address: Blaster
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+  - m_GUID: 6ba0fe32954ea764189ae6a480fa0de5
+    m_Address: Explosion
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+  - m_GUID: d8e4bfce20c348042977ae0739678965
+    m_Address: Click
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8abce442404ece045947089c5e396ddd, type: 2}
   m_SchemaSet:
