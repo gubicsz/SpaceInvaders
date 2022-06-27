@@ -6,21 +6,21 @@ namespace SpaceInvaders
     public class ProjectileSpawner
     {
         private ProjectilePresenter.Factory _factory;
-        private AddressablesService _addressables;
+        private IAssetService _assetService;
 
         private List<ProjectilePresenter> _projectiles = new List<ProjectilePresenter>();
 
-        public ProjectileSpawner(ProjectilePresenter.Factory factory, AddressablesService addressables)
+        public ProjectileSpawner(ProjectilePresenter.Factory factory, IAssetService assetService)
         {
             // Set references
             _factory = factory;
-            _addressables = addressables;
+            _assetService = assetService;
         }
 
         public void Spawn(Vector3 position, Vector3 direction, float speed)
         {
             // Try to get projectile prefab
-            var prefab = _addressables.GetAsset<GameObject>("Projectile");
+            var prefab = _assetService.Get<GameObject>("Projectile");
 
             // Handle error
             if (prefab == null)

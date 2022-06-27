@@ -6,18 +6,18 @@ namespace SpaceInvaders
     {
         private PlayerPresenter.Factory _factory;
         private PlayerPresenter _player;
-        private AddressablesService _addressables;
+        private IAssetService _assetService;
 
-        public PlayerSpawner(PlayerPresenter.Factory factory, AddressablesService addressables)
+        public PlayerSpawner(PlayerPresenter.Factory factory, IAssetService assetService)
         {
             _factory = factory;
-            _addressables = addressables;
+            _assetService = assetService;
         }
 
         public void Spawn()
         {
             // Try to get player prefab
-            var prefab = _addressables.GetAsset<GameObject>("Player");
+            var prefab = _assetService.Get<GameObject>("Player");
 
             // Handle error
             if (prefab == null)

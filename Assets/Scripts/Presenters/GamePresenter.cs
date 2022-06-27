@@ -7,16 +7,16 @@ namespace SpaceInvaders
 {
     public class GamePresenter : MonoBehaviour
     {
-        [Inject] AddressablesService _addressables;
+        [Inject] IAssetService _assetService;
+        [Inject] IEnemiesManager _enemiesManager;
         [Inject] GameStateModel _gameState;
         [Inject] GameplayModel _gameplay;
+        [Inject] ScoresModel _scores;
         [Inject] PlayerSpawner _playerSpawner;
         [Inject] ProjectileSpawner _projectileSpawner;
         [Inject] EnemySpawner _enemySpawner;
-        [Inject] IEnemiesManager _enemiesManager;
         [Inject] EnemyConfig _enemyConfig;
         [Inject] LevelConfig _levelConfig;
-        [Inject] ScoresModel _scores;
 
         private void Start()
         {
@@ -24,11 +24,11 @@ namespace SpaceInvaders
             _gameState.State.Where(state => state == GameState.Loading).Subscribe(async state =>
             {
                 // Load addressable assets
-                await _addressables.LoadAsset<GameObject>("Enemy1");
-                await _addressables.LoadAsset<GameObject>("Enemy2");
-                await _addressables.LoadAsset<GameObject>("Enemy3");
-                await _addressables.LoadAsset<GameObject>("Player");
-                await _addressables.LoadAsset<GameObject>("Projectile");
+                await _assetService.Load<GameObject>("Enemy1");
+                await _assetService.Load<GameObject>("Enemy2");
+                await _assetService.Load<GameObject>("Enemy3");
+                await _assetService.Load<GameObject>("Player");
+                await _assetService.Load<GameObject>("Projectile");
 
                 // Load scores
                 _scores.Load();

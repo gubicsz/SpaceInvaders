@@ -7,16 +7,16 @@ namespace SpaceInvaders
     {
         private EnemyPresenter.Factory _factory;
         private EnemyConfig _enemyConfig;
-        private AddressablesService _addressables;
+        private IAssetService _assetService;
 
         private List<EnemyPresenter> _enemies = new List<EnemyPresenter>();
 
-        public EnemySpawner(EnemyPresenter.Factory factory, EnemyConfig enemyConfig, AddressablesService addressables)
+        public EnemySpawner(EnemyPresenter.Factory factory, EnemyConfig enemyConfig, IAssetService assetService)
         {
             // Set references
             _factory = factory;
             _enemyConfig = enemyConfig;
-            _addressables = addressables;
+            _assetService = assetService;
         }
 
         public IReadOnlyList<EnemyPresenter> Enemies => _enemies.AsReadOnly();
@@ -29,7 +29,7 @@ namespace SpaceInvaders
             for (int i = 0; i < 3; i++)
             {
                 string key = $"Enemy{i + 1}";
-                var prefab = _addressables.GetAsset<GameObject>(key);
+                var prefab = _assetService.Get<GameObject>(key);
 
                 // Stop spawning if an enemy is not found
                 if (prefab == null)

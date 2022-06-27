@@ -7,12 +7,12 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace SpaceInvaders
 {
-    public class AddressablesService : IDisposable
+    public class AddressablesService : IAssetService, IDisposable
     {
         private Dictionary<string, object> _assets = new Dictionary<string, object>();
         private List<AsyncOperationHandle> _handles = new List<AsyncOperationHandle>();
 
-        public async UniTask LoadAsset<T>(string key)
+        public async UniTask Load<T>(string key)
         {
             // Handle errors
             if (string.IsNullOrEmpty(key) || _assets.ContainsKey(key))
@@ -37,7 +37,7 @@ namespace SpaceInvaders
             }
         }
 
-        public T GetAsset<T>(string key)
+        public T Get<T>(string key)
         {
             // Handle errors
             if (string.IsNullOrEmpty(key) || !_assets.TryGetValue(key, out object obj))
