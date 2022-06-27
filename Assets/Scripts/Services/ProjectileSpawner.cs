@@ -20,7 +20,7 @@ namespace SpaceInvaders
         public void Spawn(Vector3 position, Vector3 direction, float speed)
         {
             // Try to get projectile prefab
-            var prefab = _addressables.GetGameObject("Projectile");
+            var prefab = _addressables.GetAsset<GameObject>("Projectile");
 
             // Handle error
             if (prefab == null)

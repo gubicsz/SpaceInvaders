@@ -17,7 +17,7 @@ namespace SpaceInvaders
         public void Spawn()
         {
             // Try to get player prefab
-            var prefab = _addressables.GetGameObject("Player");
+            var prefab = _addressables.GetAsset<GameObject>("Player");
 
             // Handle error
             if (prefab == null)

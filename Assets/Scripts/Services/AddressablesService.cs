@@ -1,16 +1,20 @@
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace SpaceInvaders
 {
-    public class AddressablesService
+    public class AddressablesService : IDisposable
     {
-        private Dictionary<string, GameObject> _assets = new Dictionary<string,GameObject>();
+        private Dictionary<string, object> _assets = new Dictionary<string, object>();
+        private List<AsyncOperationHandle> _handles = new List<AsyncOperationHandle>();
 
-        public async UniTask Load(string key)
+        public async UniTask LoadAsset<T>(string key)
         {
+            // Handle errors
             if (string.IsNullOrEmpty(key) || _assets.ContainsKey(key))
             {
                 return;
@@ -18,8 +22,13 @@ namespace SpaceInvaders
 
             try
             {
-                var go = await Addressables.LoadAssetAsync<GameObject>(key).ToUniTask();
-                _assets.Add(key, go);
+                // Create load asset handle
+                var handle = Addressables.LoadAssetAsync<T>(key);
+                _handles.Add(handle);
+
+                // Load addressable asset
+                T obj = await handle.ToUniTask();
+                _assets.Add(key, obj);
             }
             catch (InvalidKeyException e)
             {
@@ -28,14 +37,24 @@ namespace SpaceInvaders
             }
         }
 
-        public GameObject GetGameObject(string key)
+        public T GetAsset<T>(string key)
         {
-            if (string.IsNullOrEmpty(key) || !_assets.TryGetValue(key, out GameObject go))
+            // Handle errors
+            if (string.IsNullOrEmpty(key) || !_assets.TryGetValue(key, out object obj))
             {
-                return null;
+                return default;
             }
 
-            return go;
+            return (obj is T t) ? t : default;
+        }
+
+        public void Dispose()
+        {
+            // Release addressable handles
+            foreach (var handle in _handles)
+            {
+                Addressables.Release(handle);
+            }
         }
     }
 }

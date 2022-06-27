@@ -29,7 +29,7 @@ namespace SpaceInvaders
             for (int i = 0; i < 3; i++)
             {
                 string key = $"Enemy{i + 1}";
-                var prefab = _addressables.GetGameObject(key);
+                var prefab = _addressables.GetAsset<GameObject>(key);
 
                 // Stop spawning if an enemy is not found
                 if (prefab == null)

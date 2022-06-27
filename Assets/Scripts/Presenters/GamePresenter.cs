@@ -24,11 +24,11 @@ namespace SpaceInvaders
             _gameState.State.Where(state => state == GameState.Loading).Subscribe(async state =>
             {
                 // Load addressable assets
-                await _addressables.Load("Enemy1");
-                await _addressables.Load("Enemy2");
-                await _addressables.Load("Enemy3");
-                await _addressables.Load("Player");
-                await _addressables.Load("Projectile");
+                await _addressables.LoadAsset<GameObject>("Enemy1");
+                await _addressables.LoadAsset<GameObject>("Enemy2");
+                await _addressables.LoadAsset<GameObject>("Enemy3");
+                await _addressables.LoadAsset<GameObject>("Player");
+                await _addressables.LoadAsset<GameObject>("Projectile");
 
                 // Load scores
                 _scores.Load();
