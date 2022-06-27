@@ -8,12 +8,10 @@ namespace SpaceInvaders
 {
     public class GamePresenter : MonoBehaviour
     {
-        [Inject] IAssetService _assetService;
         [Inject] IEnemiesManager _enemiesManager;
         [Inject] IAudioService _audioService;
         [Inject] GameStateModel _gameState;
         [Inject] GameplayModel _gameplay;
-        [Inject] ScoresModel _scores;
         [Inject] PlayerSpawner _playerSpawner;
         [Inject] ProjectileSpawner _projectileSpawner;
         [Inject] EnemySpawner _enemySpawner;
@@ -22,19 +20,6 @@ namespace SpaceInvaders
 
         private void Start()
         {
-            // Handle game loading
-            _gameState.State.Where(state => state == GameState.Loading).Subscribe(async state =>
-            {
-                // Load assets
-                await LoadAssetsAsync();
-
-                // Load scores
-                _scores.Load();
-
-                // Proceed to the main menu
-                _gameState.State.Value = GameState.Menu;
-            }).AddTo(this);
-
             // Handle game state transitions
             _gameState.State.Pairwise().Subscribe(transition => OnStateTransition(transition)).AddTo(this);
 
@@ -86,21 +71,6 @@ namespace SpaceInvaders
                     _gameState.State.Value = GameState.Results;
                 }
             }).AddTo(this);
-        }
-
-        private async UniTask LoadAssetsAsync()
-        {
-            // Load objects
-            await _assetService.Load<GameObject>(Constants.Objects.Enemy1);
-            await _assetService.Load<GameObject>(Constants.Objects.Enemy2);
-            await _assetService.Load<GameObject>(Constants.Objects.Enemy3);
-            await _assetService.Load<GameObject>(Constants.Objects.Player);
-            await _assetService.Load<GameObject>(Constants.Objects.Projectile);
-
-            // Load audio
-            await _assetService.Load<AudioClip>(Constants.Audio.Blaster);
-            await _assetService.Load<AudioClip>(Constants.Audio.Explosion);
-            await _assetService.Load<AudioClip>(Constants.Audio.Click);
         }
 
         private void OnStateTransition(Pair<GameState> transition)

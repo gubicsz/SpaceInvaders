@@ -1,11 +1,10 @@
-using UniRx;
-using UniRx.Triggers;
+using System;
 using UnityEngine;
 using Zenject;
 
 namespace SpaceInvaders
 {
-    public class ProjectilePresenter : MonoBehaviour
+    public class ProjectilePresenter : MonoBehaviour, IPoolable<Vector3, Vector3, float, IMemoryPool>, IDisposable
     {
         [SerializeField] Collider _collider;
 
@@ -13,46 +12,67 @@ namespace SpaceInvaders
         [Inject] ProjectileSpawner _projectileSpawner;
         [Inject] IAudioService _audioService;
 
-        public void Init(Vector3 position, Vector3 direction, float speed)
+        IMemoryPool _pool;
+
+        private void Update()
         {
-            // Init model
-            _projectile.Init(position, direction, speed);
-
-            // Update position based on model
-            _projectile.Position.Subscribe(pos => transform.position = pos).AddTo(this);
-
-            // Enable collider once the starting position is set
-            _collider.enabled = true;
-
-            // Set direction
-            transform.forward = _projectile.Direction;
-
-            // Update model
-            Observable.EveryUpdate().Subscribe(_ =>
+            // Move projectile
+            if (_projectile.Move(Time.deltaTime))
             {
-                // Despawn projectile when it out of level bounds
-                if (_projectile.Move(Time.deltaTime))
-                {
-                    _projectileSpawner.Despawn(this);
-                }
-            }).AddTo(this);
-
-            // Handle projectile hit
-            this.OnTriggerEnterAsObservable().Subscribe(collider =>
+                // Despawn projectile when it moved out of level bounds
+                _projectileSpawner.Despawn(this);
+            }
+            else
             {
-                if (collider.TryGetComponent(out ProjectilePresenter projectile))
-                {
-                    // Play explosion sfx
-                    _audioService.PlaySfx(Constants.Audio.Explosion, 0.25f);
-
-                    // Despawn both projectiles
-                    _projectileSpawner.Despawn(projectile);
-                    _projectileSpawner.Despawn(this);
-                }
-            }).AddTo(this);
+                // Update position based on model
+                transform.position = _projectile.Position;
+            }
         }
 
-        public class Factory : PlaceholderFactory<Object, ProjectilePresenter>
+        private void OnTriggerEnter(Collider other)
+        {
+            // Handle projectile hit
+            if (other.TryGetComponent(out ProjectilePresenter projectile))
+            {
+                // Play explosion sfx
+                _audioService.PlaySfx(Constants.Audio.Explosion, 0.25f);
+
+                // Despawn both projectiles
+                _projectileSpawner.Despawn(projectile);
+                _projectileSpawner.Despawn(this);
+            }
+        }
+
+        public void OnSpawned(Vector3 position, Vector3 direction, float speed, IMemoryPool pool)
+        {
+            // Init model
+            _pool = pool;
+            _projectile.Init(position, direction, speed);
+
+            // Set orientation
+            transform.position = _projectile.Position;
+            transform.forward = _projectile.Direction;
+
+            // Enable collider
+            _collider.enabled = true;
+        }
+
+        public void OnDespawned()
+        {
+            // Reset model
+            _pool = null;
+            _projectile.Reset();
+
+            // Disable collider
+            _collider.enabled = false;
+        }
+
+        public void Dispose()
+        {
+            _pool.Despawn(this);
+        }
+
+        public class Factory : PlaceholderFactory<Vector3, Vector3, float, ProjectilePresenter>
         {
         }
     }

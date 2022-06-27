@@ -5,16 +5,15 @@ namespace SpaceInvaders
 {
     public class GameInstaller : MonoInstaller
     {
+        [Inject] IAssetService _assetService;
+
         public override void InstallBindings()
         {
             // Game
-            Container.Bind<GameStateModel>().AsSingle();
             Container.Bind<GameplayModel>().AsSingle();
-            Container.Bind<ScoresModel>().AsSingle();
             Container.Bind<InputModel>().AsSingle();
 
             // Services
-            Container.BindInterfacesAndSelfTo<AddressablesService>().AsSingle();
             Container.BindInterfacesAndSelfTo<StorageService>().AsSingle();
             Container.BindInterfacesAndSelfTo<AudioService>().AsSingle();
 
@@ -32,7 +31,8 @@ namespace SpaceInvaders
             // Projectiles
             Container.Bind<ProjectileModel>().AsTransient();
             Container.BindInterfacesAndSelfTo<ProjectileSpawner>().AsSingle();
-            Container.BindFactory<Object, ProjectilePresenter, ProjectilePresenter.Factory>().FromFactory<PrefabFactory<ProjectilePresenter>>();
+            Container.BindFactory<Vector3, Vector3, float, ProjectilePresenter, ProjectilePresenter.Factory>().FromMonoPoolableMemoryPool(
+                x => x.WithInitialSize(10).FromComponentInNewPrefab(_assetService.Get<GameObject>(Constants.Objects.Projectile)).UnderTransformGroup("ProjectilePool"));
         }
     }
 }

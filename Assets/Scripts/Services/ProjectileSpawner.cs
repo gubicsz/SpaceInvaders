@@ -6,31 +6,19 @@ namespace SpaceInvaders
     public class ProjectileSpawner
     {
         private ProjectilePresenter.Factory _factory;
-        private IAssetService _assetService;
 
         private List<ProjectilePresenter> _projectiles = new List<ProjectilePresenter>();
 
-        public ProjectileSpawner(ProjectilePresenter.Factory factory, IAssetService assetService)
+        public ProjectileSpawner(ProjectilePresenter.Factory factory)
         {
             // Set references
             _factory = factory;
-            _assetService = assetService;
         }
 
         public void Spawn(Vector3 position, Vector3 direction, float speed)
         {
-            // Try to get projectile prefab
-            var prefab = _assetService.Get<GameObject>(Constants.Objects.Projectile);
-
-            // Handle error
-            if (prefab == null)
-            {
-                return;
-            }
-
             // Spawn projectile
-            ProjectilePresenter projectile = _factory.Create(prefab);
-            projectile.Init(position, direction, speed);
+            ProjectilePresenter projectile = _factory.Create(position, direction, speed);
             _projectiles.Add(projectile);
         }
 
@@ -43,8 +31,8 @@ namespace SpaceInvaders
             }
 
             // Despawn projectile
+            projectile.Dispose();
             _projectiles.Remove(projectile);
-            Object.Destroy(projectile.gameObject);
         }
 
         public void DespawnAll()
@@ -52,7 +40,7 @@ namespace SpaceInvaders
             // Despawn projectiles
             foreach (var projectile in _projectiles)
             {
-                Object.Destroy(projectile.gameObject);
+                projectile.Dispose();
             }
 
             // Clear list

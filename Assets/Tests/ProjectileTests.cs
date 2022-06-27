@@ -20,7 +20,7 @@ public class ProjectileTests : ZenjectUnitTestFixture
     [Test]
     public void ProjectileShouldStartWithInitialValues()
     {
-        Assert.That(_projectile.Position.Value == Vector3.zero);
+        Assert.That(_projectile.Position == Vector3.zero);
         Assert.That(_projectile.Direction == Vector3.zero);
         Assert.That(_projectile.Speed == 0f);
     }
@@ -34,9 +34,20 @@ public class ProjectileTests : ZenjectUnitTestFixture
 
         _projectile.Init(position, direction, speed);
 
-        Assert.That(_projectile.Position.Value == position);
+        Assert.That(_projectile.Position == position);
         Assert.That(_projectile.Direction == direction);
         Assert.That(_projectile.Speed == speed);
+    }
+
+    [Test]
+    public void ResetShouldZeroProperties()
+    {
+        _projectile.Init(Vector3.one, Vector3.forward, 10f);
+        _projectile.Reset();
+
+        Assert.That(_projectile.Position == Vector3.zero);
+        Assert.That(_projectile.Direction == Vector3.zero);
+        Assert.That(_projectile.Speed == 0f);
     }
 
     [Test]
@@ -46,7 +57,7 @@ public class ProjectileTests : ZenjectUnitTestFixture
 
         bool isOutOfBounds = _projectile.Move(1f);
 
-        Assert.That(_projectile.Position.Value == Vector3.forward);
+        Assert.That(_projectile.Position == Vector3.forward);
         Assert.That(!isOutOfBounds);
     }
 
