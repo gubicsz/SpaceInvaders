@@ -23,13 +23,22 @@ namespace SpaceInvaders
 
         public void SpawnAll()
         {
-            // Try to get enemy prefab
-            var prefab = _addressables.GetGameObject("Enemy");
+            List<GameObject> prefabs = new List<GameObject>(3);
 
-            // Handle error
-            if (prefab == null)
+            // Try to get enemy prefabs
+            for (int i = 0; i < 3; i++)
             {
-                return;
+                string key = $"Enemy{i + 1}";
+                var prefab = _addressables.GetGameObject(key);
+
+                // Stop spawning if an enemy is not found
+                if (prefab == null)
+                {
+                    Debug.LogError($"Couldn't find {key} in the Addressables.");
+                    return;
+                }
+
+                prefabs.Add(prefab);
             }
 
             // Spawn enemies
@@ -37,9 +46,11 @@ namespace SpaceInvaders
             {
                 for (int row = 0; row < _enemyConfig.Rows; row++)
                 {
-                    // Spawn and init enemy
-                    EnemyPresenter enemy = _factory.Create(prefab);
+                    // Calculate enemy type based on row
                     int type = row <= 1 ? 0 : row <= 3 ? 1 : 2;
+
+                    // Spawn and init enemy
+                    EnemyPresenter enemy = _factory.Create(prefabs[type]);
                     enemy.Init(type, row, col);
                     _enemies.Add(enemy);
                 }

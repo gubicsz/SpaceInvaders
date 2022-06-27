@@ -24,7 +24,9 @@ namespace SpaceInvaders
             _gameState.State.Where(state => state == GameState.Loading).Subscribe(async state =>
             {
                 // Load addressable assets
-                await _addressables.Load("Enemy");
+                await _addressables.Load("Enemy1");
+                await _addressables.Load("Enemy2");
+                await _addressables.Load("Enemy3");
                 await _addressables.Load("Player");
                 await _addressables.Load("Projectile");
 

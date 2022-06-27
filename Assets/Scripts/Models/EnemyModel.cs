@@ -22,7 +22,6 @@ namespace SpaceInvaders
 
     public class EnemyModel : DisposableEntity
     {
-        public int Type { get; private set; }
         public int Row { get; private set; }
         public int Col { get; private set; }
         public ReadOnlyReactiveProperty<Vector3> Position { get; private set; }
@@ -37,10 +36,9 @@ namespace SpaceInvaders
             _enemiesManager = enemiesManager;
         }
 
-        public void Init(int type, int row, int col)
+        public void Init(int row, int col)
         {
             // Init properties
-            Type = type;
             Row = row;
             Col = col;
 

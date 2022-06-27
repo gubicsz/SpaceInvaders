@@ -18,7 +18,7 @@ MonoBehaviour:
   m_GUID: b51057fa03e092b49a07beb2016b0864
   m_SerializeEntries:
   - m_GUID: e3b45ea78eab92b47ab84b13c33cafe4
-    m_Address: Enemy
+    m_Address: Enemy1
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: c2a70167f1e4fc143a655997de242bba
@@ -27,6 +27,14 @@ MonoBehaviour:
     m_SerializedLabels: []
   - m_GUID: 270af1a3357c6594db004add0c76142d
     m_Address: Projectile
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2fb254b7188373742a5d04abeec7401a
+    m_Address: Enemy2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c1896beece8e5b84f821455e4b0b244a
+    m_Address: Enemy3
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

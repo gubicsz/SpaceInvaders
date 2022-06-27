@@ -7,8 +7,6 @@ namespace SpaceInvaders
 {
     public class EnemyPresenter : MonoBehaviour
     {
-        [SerializeField] GameObject[] _types;
-
         [Inject] EnemyModel _enemy;
         [Inject] EnemySpawner _enemySpawner;
         [Inject] EnemyConfig _enemyConfig;
@@ -18,16 +16,10 @@ namespace SpaceInvaders
         public void Init(int type, int row, int col)
         {
             // Initialize model
-            _enemy.Init(type, row, col);
+            _enemy.Init(row, col);
 
             // Update position based on model
             _enemy.Position.Subscribe(pos => transform.position = pos).AddTo(this);
-
-            // Update enemy type based on model
-            for (int i = 0; i < _types.Length; i++)
-            {
-                _types[i].SetActive(i == _enemy.Type);
-            }
 
             // Handle projectile hit
             this.OnTriggerEnterAsObservable().Subscribe(collider =>
