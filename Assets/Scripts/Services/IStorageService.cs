@@ -1,9 +1,12 @@
 namespace SpaceInvaders
 {
+    /// <summary>
+    /// Provides basic save / load functionality.
+    /// </summary>
     public interface IStorageService
     {
         /// <summary>
-        /// Saves an object to storage.
+        /// Saves an object to the device.
         /// </summary>
         /// <typeparam name="T">The type of the object.</typeparam>
         /// <param name="key">The key of the object.</param>
@@ -11,7 +14,7 @@ namespace SpaceInvaders
         void Save<T>(string key, T obj);
 
         /// <summary>
-        /// Loads an object from sorage.
+        /// Loads an object from the device.
         /// </summary>
         /// <typeparam name="T">The type of the object.</typeparam>
         /// <param name="key">The key of the object.</param>

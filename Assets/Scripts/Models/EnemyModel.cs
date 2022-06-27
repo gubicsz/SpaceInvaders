@@ -27,9 +27,9 @@ namespace SpaceInvaders
         public ReadOnlyReactiveProperty<Vector3> Position { get; private set; }
 
         private EnemyConfig _enemyConfig;
-        private EnemiesManager _enemiesManager;
+        private IEnemiesManager _enemiesManager;
 
-        public EnemyModel(EnemyConfig enemyConfig, EnemiesManager enemiesManager)
+        public EnemyModel(EnemyConfig enemyConfig, IEnemiesManager enemiesManager)
         {
             // Set references
             _enemyConfig = enemyConfig;
@@ -64,7 +64,7 @@ namespace SpaceInvaders
         /// <param name="col">The column index of the grid.</param>
         /// <param name="row">The row index of the grid.</param>
         /// <returns>The grid position.</returns>
-        private Vector3 CalculateGridPosition(int col, int row)
+        public Vector3 CalculateGridPosition(int col, int row)
         {
             return (_enemyConfig.GridWidth * col * Vector3.right) +
                 (_enemyConfig.GridHeight * row * Vector3.forward);

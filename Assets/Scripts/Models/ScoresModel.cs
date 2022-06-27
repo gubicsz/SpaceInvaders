@@ -22,20 +22,11 @@ namespace SpaceInvaders
     {
         public ReactiveCollection<ScoreItem> Scoreboard { get; private set; }
 
+        private IStorageService _storageService;
+
         private const string _storageKey = "Scoreboard";
-        private StorageService _storageService;
 
-        private Scoreboard _dummyScoreboad = new Scoreboard()
-        {
-            Items = new ScoreItem[]
-            {
-                new ScoreItem() { Score = 1230, Date = DateTime.Now.AddDays(-2).ToString("MM/dd/yyyy HH:mm") },
-                new ScoreItem() { Score = 150, Date = DateTime.Now.AddDays(-1).ToString("MM/dd/yyyy HH:mm") },
-                new ScoreItem() { Score = 90, Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm") },
-            }
-        };
-
-        public ScoresModel(StorageService storageService)
+        public ScoresModel(IStorageService storageService)
         {
             _storageService = storageService;
             Scoreboard = new ReactiveCollection<ScoreItem>();
@@ -49,7 +40,12 @@ namespace SpaceInvaders
 
             // Order items and update scoreboard
             var orderedList = originalList.OrderByDescending(x => x.Score).Take(10);
-            UpdateScoreboard(orderedList);
+
+            // Update scoreboard
+            if (orderedList != null)
+            {
+                UpdateScoreboard(orderedList);
+            }
         }
 
         public void Save()
@@ -66,17 +62,21 @@ namespace SpaceInvaders
             // Load scoreboard from the device
             var scoreboard = _storageService.Load<Scoreboard>(_storageKey);
 
-            // Load dummy scoreboard for testing purposes
-            if (scoreboard == null)
+            // Update scoreboard
+            if (scoreboard != null)
             {
-                scoreboard = _dummyScoreboad;
+                UpdateScoreboard(scoreboard.Items);
             }
-
-            UpdateScoreboard(scoreboard.Items);
         }
 
         private void UpdateScoreboard(IEnumerable<ScoreItem> items)
         {
+            // Handle error
+            if (items == null)
+            {
+                return;
+            }
+
             // Clear reactive list
             Scoreboard.Clear();
 

@@ -1,4 +1,3 @@
-using System;
 using UniRx;
 using UnityEngine;
 
@@ -16,11 +15,13 @@ namespace SpaceInvaders
         {
             // Set references
             _levelConfig = levelConfig;
+            Position = new Vector3ReactiveProperty();
         }
 
         public void Init(Vector3 position, Vector3 direction, float speed)
         {
-            Position = new Vector3ReactiveProperty(position);
+            // Init properties
+            Position.Value = position;
             Direction = direction;
             Speed = speed;
         }

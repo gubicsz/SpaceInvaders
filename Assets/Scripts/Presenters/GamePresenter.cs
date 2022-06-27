@@ -13,7 +13,7 @@ namespace SpaceInvaders
         [Inject] PlayerSpawner _playerSpawner;
         [Inject] ProjectileSpawner _projectileSpawner;
         [Inject] EnemySpawner _enemySpawner;
-        [Inject] EnemiesManager _enemiesManager;
+        [Inject] IEnemiesManager _enemiesManager;
         [Inject] EnemyConfig _enemyConfig;
         [Inject] LevelConfig _levelConfig;
         [Inject] ScoresModel _scores;

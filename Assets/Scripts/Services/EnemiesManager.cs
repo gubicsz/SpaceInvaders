@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SpaceInvaders
 {
-    public class EnemiesManager
+    public class EnemiesManager : IEnemiesManager
     {
         public Vector3ReactiveProperty Position { get; private set; }
         public Vector3 Direction { get; private set; }
