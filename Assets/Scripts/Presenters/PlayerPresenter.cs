@@ -12,7 +12,7 @@ namespace SpaceInvaders
 
         [Inject] PlayerModel _player;
         [Inject] PlayerConfig _playerConfig;
-        [Inject] InputService _input;
+        [Inject] InputModel _input;
         [Inject] ProjectileSpawner _projectileSpawner;
         [Inject] GameStateModel _gameState;
 

@@ -9,7 +9,7 @@ namespace SpaceInvaders
         [SerializeField] ButtonAxis ButtonHorizontal;
         [SerializeField] ButtonTouch ButtonFire;
 
-        [Inject] InputService _input;
+        [Inject] InputModel _input;
         [Inject] GameStateModel _gameState;
 
         private const string _axisHorizontal = "Horizontal";
@@ -23,7 +23,7 @@ namespace SpaceInvaders
             ButtonFire.gameObject.SetActive(false);
 #endif
 
-            // Update input service based on platform
+            // Update input model based on platform
             Observable.EveryUpdate().Where(_ => _gameState.State.Value == GameState.Gameplay).Subscribe(_ =>
             {
 #if UNITY_EDITOR

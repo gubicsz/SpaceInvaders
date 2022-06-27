@@ -11,11 +11,11 @@ namespace SpaceInvaders
             Container.Bind<GameStateModel>().AsSingle();
             Container.Bind<GameplayModel>().AsSingle();
             Container.Bind<ScoresModel>().AsSingle();
+            Container.Bind<InputModel>().AsSingle();
 
             // Services
             Container.BindInterfacesAndSelfTo<AddressablesService>().AsSingle();
             Container.BindInterfacesAndSelfTo<StorageService>().AsSingle();
-            Container.BindInterfacesAndSelfTo<InputService>().AsSingle();
 
             // Player
             Container.Bind<PlayerModel>().AsSingle();
