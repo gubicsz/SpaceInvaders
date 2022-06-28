@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UniRx;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace SpaceInvaders
         [SerializeField] TextMeshProUGUI _labelScore;
         [SerializeField] TextMeshProUGUI _labelWave;
         [SerializeField] TextMeshProUGUI _labelLives;
+        [SerializeField] Image _imageVignette;
 
         [Inject] GameStateModel _gameState;
         [Inject] GameplayModel _gameplay;
@@ -32,6 +34,14 @@ namespace SpaceInvaders
             _gameplay.CurrentScore.SubscribeToText(_labelScore).AddTo(this);
             _gameplay.CurrentWave.SubscribeToText(_labelWave).AddTo(this);
             _player.Lives.SubscribeToText(_labelLives).AddTo(this);
+
+            // Show screen hit effect when the player is damaged
+            _player.Lives.Pairwise().Where(lives => lives.Current < lives.Previous).Subscribe(async _ =>
+            {
+                _imageVignette.enabled = true;
+                await UniTask.Delay(250);
+                _imageVignette.enabled = false;
+            }).AddTo(this);
         }
     }
 }
