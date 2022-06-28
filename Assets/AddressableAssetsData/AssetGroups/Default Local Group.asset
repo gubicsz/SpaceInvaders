@@ -47,6 +47,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - audio
+  - m_GUID: 5d9bf4dca45484f4bb3f3fe416559c88
+    m_Address: Music
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8abce442404ece045947089c5e396ddd, type: 2}
   m_SchemaSet:

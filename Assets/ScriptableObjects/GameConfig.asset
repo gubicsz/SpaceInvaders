@@ -31,3 +31,5 @@ MonoBehaviour:
     BaseScore: 10
   _level:
     Bounds: {x: 19, y: 0, z: 10}
+  _audio:
+    MusicVolume: 0.15

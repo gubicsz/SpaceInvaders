@@ -4,6 +4,9 @@ namespace SpaceInvaders
 {
     public class EnemiesManager : IEnemiesManager
     {
+        /// <summary>
+        /// The global position of the formation.
+        /// </summary>
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
 

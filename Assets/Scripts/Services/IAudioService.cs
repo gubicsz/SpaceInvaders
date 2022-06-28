@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace SpaceInvaders
 {
     public interface IAudioService
@@ -11,5 +9,17 @@ namespace SpaceInvaders
         /// <param name="position">The position to play at.</param>
         /// <param name="volume">The volume.</param>
         void PlaySfx(string key, float volume);
+
+        /// <summary>
+        /// Starts music playback.
+        /// </summary>
+        /// <param name="key">The key of the audio clip.</param>
+        /// <param name="volume">The volume.</param>
+        void PlayMusic(string key, float volume);
+
+        /// <summary>
+        /// Stops music playback.
+        /// </summary>
+        void StopMusic();
     }
 }

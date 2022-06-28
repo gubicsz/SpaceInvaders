@@ -17,6 +17,7 @@ namespace SpaceInvaders
         [Inject] EnemySpawner _enemySpawner;
         [Inject] EnemyConfig _enemyConfig;
         [Inject] LevelConfig _levelConfig;
+        [Inject] AudioConfig _audioConfig;
 
         private void Start()
         {
@@ -87,6 +88,9 @@ namespace SpaceInvaders
 
                 // Reset enemies manager
                 _enemiesManager.Reset();
+
+                // Start music
+                _audioService.PlayMusic(Constants.Audio.Music, _audioConfig.MusicVolume);
             }
             else if (transition.Previous == GameState.Gameplay)
             {
@@ -98,6 +102,9 @@ namespace SpaceInvaders
 
                 // Despawn projectiles
                 _projectileSpawner.DespawnAll();
+
+                // Stop music
+                _audioService.StopMusic();
             }
         }
     }

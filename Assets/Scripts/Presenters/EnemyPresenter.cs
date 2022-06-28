@@ -14,10 +14,12 @@ namespace SpaceInvaders
         [Inject] ProjectileSpawner _projectileSpawner;
         [Inject] GameplayModel _gameplay;
         [Inject] IAudioService _audioService;
-        [Inject] IEnemiesManager _enemiesManager;
 
         IMemoryPool _pool;
 
+        /// <summary>
+        /// The local position of the enemy in the formation.
+        /// </summary>
         public Vector3 Position => _enemy.Position;
 
         private void OnTriggerEnter(Collider other)
@@ -26,7 +28,7 @@ namespace SpaceInvaders
             if (other.TryGetComponent(out ProjectilePresenter projectile))
             {
                 // Play explosion sfx
-                _audioService.PlaySfx(Constants.Audio.Explosion, 0.25f);
+                _audioService.PlaySfx(Constants.Audio.Explosion, 0.15f);
 
                 // Increase score by enemy type
                 _gameplay.CurrentScore.Value += (_enemy.Type + 1) * _enemyConfig.BaseScore;

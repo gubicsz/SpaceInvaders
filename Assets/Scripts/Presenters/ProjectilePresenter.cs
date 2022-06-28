@@ -35,7 +35,7 @@ namespace SpaceInvaders
             if (other.TryGetComponent(out ProjectilePresenter projectile))
             {
                 // Play explosion sfx
-                _audioService.PlaySfx(Constants.Audio.Explosion, 0.25f);
+                _audioService.PlaySfx(Constants.Audio.Explosion, 0.15f);
 
                 // Despawn both projectiles
                 _projectileSpawner.Despawn(projectile);

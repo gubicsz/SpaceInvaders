@@ -9,6 +9,7 @@ namespace SpaceInvaders
         [SerializeField] PlayerConfig _player;
         [SerializeField] EnemyConfig _enemy;
         [SerializeField] LevelConfig _level;
+        [SerializeField] AudioConfig _audio;
 
         public override void InstallBindings()
         {
@@ -16,6 +17,7 @@ namespace SpaceInvaders
             Container.BindInstances(_player);
             Container.BindInstances(_enemy);
             Container.BindInstances(_level);
+            Container.BindInstances(_audio);
         }
     }
 }

@@ -12,5 +12,6 @@ public static class Constants
         public const string Blaster = "Blaster";
         public const string Explosion = "Explosion";
         public const string Click = "Click";
+        public const string Music = "Music";
     }
 }
