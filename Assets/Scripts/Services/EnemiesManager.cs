@@ -1,11 +1,10 @@
-using UniRx;
 using UnityEngine;
 
 namespace SpaceInvaders
 {
     public class EnemiesManager : IEnemiesManager
     {
-        public Vector3ReactiveProperty Position { get; private set; }
+        public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
 
         private LevelConfig _levelConfig;
@@ -19,14 +18,14 @@ namespace SpaceInvaders
             _enemyConfig = enemyConfig;
 
             // Set initial values
-            Position = new Vector3ReactiveProperty(Vector3.zero);
+            Position = Vector3.zero;
             Direction = Vector3.right;
         }
 
         public void Reset()
         {
             // Reset properties
-            Position.Value = Vector3.zero;
+            Position = Vector3.zero;
             Direction = Vector3.right;
             _lastShotTime = 0;
         }
@@ -38,11 +37,11 @@ namespace SpaceInvaders
                 (Direction.x < 0 && _levelConfig.IsPosOutOfHorizontalBounds(leftPos)))
             {
                 Direction *= -1f;
-                Position.Value += _enemyConfig.SpeedVertical * Vector3.back;
+                Position += _enemyConfig.SpeedVertical * Vector3.back;
             }
 
             // Update position
-            Position.Value += dt * _enemyConfig.SpeedHorizontal * Direction;
+            Position += dt * _enemyConfig.SpeedHorizontal * Direction;
         }
 
         public bool Shoot(float time)

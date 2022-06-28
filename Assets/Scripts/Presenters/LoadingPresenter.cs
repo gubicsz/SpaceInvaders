@@ -45,9 +45,7 @@ namespace SpaceInvaders
         private async UniTask LoadAssetsAsync()
         {
             // Load objects
-            await _assetService.Load<GameObject>(Constants.Objects.Enemy1);
-            await _assetService.Load<GameObject>(Constants.Objects.Enemy2);
-            await _assetService.Load<GameObject>(Constants.Objects.Enemy3);
+            await _assetService.Load<GameObject>(Constants.Objects.Enemy);
             await _assetService.Load<GameObject>(Constants.Objects.Player);
             await _assetService.Load<GameObject>(Constants.Objects.Projectile);
 

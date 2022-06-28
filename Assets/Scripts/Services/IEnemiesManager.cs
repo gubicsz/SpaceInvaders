@@ -1,4 +1,3 @@
-using UniRx;
 using UnityEngine;
 
 namespace SpaceInvaders
@@ -11,7 +10,7 @@ namespace SpaceInvaders
         /// <summary>
         /// The global position of the enemy grid formation.
         /// </summary>
-        Vector3ReactiveProperty Position { get; }
+        Vector3 Position { get; }
 
         /// <summary>
         /// The direction of the formation movement (left or right).

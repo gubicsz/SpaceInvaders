@@ -1,48 +1,70 @@
-using UniRx;
-using UniRx.Triggers;
+using System;
 using UnityEngine;
 using Zenject;
 
 namespace SpaceInvaders
 {
-    public class EnemyPresenter : MonoBehaviour
+    public class EnemyPresenter : MonoBehaviour, IPoolable<int, int, int, IMemoryPool>, IDisposable
     {
+        [SerializeField] GameObject[] _models;
+
         [Inject] EnemyModel _enemy;
         [Inject] EnemySpawner _enemySpawner;
         [Inject] EnemyConfig _enemyConfig;
         [Inject] ProjectileSpawner _projectileSpawner;
         [Inject] GameplayModel _gameplay;
         [Inject] IAudioService _audioService;
+        [Inject] IEnemiesManager _enemiesManager;
 
-        public void Init(int type, int row, int col)
+        IMemoryPool _pool;
+
+        public Vector3 Position => _enemy.Position;
+
+        private void OnTriggerEnter(Collider other)
         {
-            // Initialize model
-            _enemy.Init(row, col);
-
-            // Update position based on model
-            _enemy.Position.Subscribe(pos => transform.position = pos).AddTo(this);
-
             // Handle projectile hit
-            this.OnTriggerEnterAsObservable().Subscribe(collider =>
+            if (other.TryGetComponent(out ProjectilePresenter projectile))
             {
-                if (collider.TryGetComponent(out ProjectilePresenter projectile))
-                {
-                    // Play explosion sfx
-                    _audioService.PlaySfx(Constants.Audio.Explosion, 0.25f);
+                // Play explosion sfx
+                _audioService.PlaySfx(Constants.Audio.Explosion, 0.25f);
 
-                    // Despawn projectile
-                    _projectileSpawner.Despawn(projectile);
+                // Increase score by enemy type
+                _gameplay.CurrentScore.Value += (_enemy.Type + 1) * _enemyConfig.BaseScore;
 
-                    // Despawn self
-                    _enemySpawner.Despawn(this);
+                // Despawn projectile
+                _projectileSpawner.Despawn(projectile);
 
-                    // Increase score by enemy type
-                    _gameplay.CurrentScore.Value += (type + 1) * _enemyConfig.BaseScore;
-                }
-            }).AddTo(this);
+                // Despawn self
+                _enemySpawner.Despawn(this);
+            }
         }
 
-        public class Factory : PlaceholderFactory<Object, EnemyPresenter>
+        public void OnSpawned(int type, int row, int col, IMemoryPool pool)
+        {
+            // Init model
+            _pool = pool;
+            _enemy.Init(type, row, col);
+
+            // Show model based on type
+            _models[_enemy.Type].SetActive(true);
+        }
+
+        public void OnDespawned()
+        {
+            // Hide models
+            _models[_enemy.Type].SetActive(false);
+
+            // Reset model
+            _pool = null;
+            _enemy.Reset();
+        }
+
+        public void Dispose()
+        {
+            _pool.Despawn(this);
+        }
+
+        public class Factory : PlaceholderFactory<int, int, int, EnemyPresenter>
         {
         }
     }

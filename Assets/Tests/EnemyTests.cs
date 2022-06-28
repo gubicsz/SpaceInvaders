@@ -1,7 +1,5 @@
-using NSubstitute;
 using NUnit.Framework;
 using SpaceInvaders;
-using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -13,33 +11,30 @@ public class EnemyTests : ZenjectUnitTestFixture
     {
         Container.Bind<EnemyModel>().AsSingle();
         Container.Bind<EnemyConfig>().AsSingle();
-        Container.Bind<IEnemiesManager>().FromSubstitute();
         Container.Inject(this);
     }
 
     [Inject] EnemyModel _enemy;
     [Inject] EnemyConfig _enemyConfig;
-    [Inject] IEnemiesManager _enemiesManager;
 
     [Test]
     public void InitShouldSetProperties()
     {
+        int type = 0;
         int row = 0;
         int col = 0;
-        _enemiesManager.Position.Returns(new Vector3ReactiveProperty(Vector3.zero));
 
-        _enemy.Init(row, col);
+        _enemy.Init(type, row, col);
 
+        Assert.That(_enemy.Type == type);
         Assert.That(_enemy.Row == row);
         Assert.That(_enemy.Col == col);
-        Assert.That(_enemy.Position != null);
+        Assert.That(_enemy.Position != Vector3.zero);
     }
 
     [Test]
     public void InitShouldSetCorrectPosition()
     {
-        _enemiesManager.Position.Returns(new Vector3ReactiveProperty(Vector3.zero));
-
         Vector3 centerPos = -_enemy.CalculateGridPosition((_enemyConfig.Columns - 1) / 2, 0);
 
         if (_enemyConfig.Columns % 2 == 0)
@@ -47,9 +42,22 @@ public class EnemyTests : ZenjectUnitTestFixture
             centerPos -= _enemyConfig.GridWidth / 2f * Vector3.right;
         }
 
-        _enemy.Init(0, 0);
+        _enemy.Init(0, 0, 0);
 
-        Assert.That(_enemy.Position.Value == centerPos);
+        Assert.That(_enemy.Position == centerPos);
+    }
+
+    [Test]
+    public void ResetShouldZeroProperties()
+    {
+        _enemy.Init(0, 0, 0);
+
+        _enemy.Reset();
+
+        Assert.That(_enemy.Type == 0);
+        Assert.That(_enemy.Row == 0);
+        Assert.That(_enemy.Col == 0);
+        Assert.That(_enemy.Position == Vector3.zero);
     }
 
     [Test]

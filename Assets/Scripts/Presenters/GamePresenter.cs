@@ -42,6 +42,11 @@ namespace SpaceInvaders
                 var lastEnemy = _enemySpawner.Enemies.Last();
                 _enemiesManager.Move(firstEnemy.transform.position, lastEnemy.transform.position, Time.deltaTime);
 
+                foreach (var enemy in _enemySpawner.Enemies)
+                {
+                    enemy.transform.position = _enemiesManager.Position + enemy.Position;
+                }
+
                 // Handle enemy shooting
                 if (_enemiesManager.Shoot(Time.time))
                 {

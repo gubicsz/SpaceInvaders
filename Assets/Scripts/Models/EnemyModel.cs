@@ -1,5 +1,4 @@
 using System;
-using UniRx;
 using UnityEngine;
 
 namespace SpaceInvaders
@@ -22,23 +21,23 @@ namespace SpaceInvaders
 
     public class EnemyModel : DisposableEntity
     {
+        public int Type { get; private set; }
         public int Row { get; private set; }
         public int Col { get; private set; }
-        public ReadOnlyReactiveProperty<Vector3> Position { get; private set; }
+        public Vector3 Position { get; private set; }
 
-        private EnemyConfig _enemyConfig;
-        private IEnemiesManager _enemiesManager;
+        private EnemyConfig _enemyConfig;    
 
-        public EnemyModel(EnemyConfig enemyConfig, IEnemiesManager enemiesManager)
+        public EnemyModel(EnemyConfig enemyConfig)
         {
             // Set references
             _enemyConfig = enemyConfig;
-            _enemiesManager = enemiesManager;
         }
 
-        public void Init(int row, int col)
+        public void Init(int type, int row, int col)
         {
             // Init properties
+            Type = type;
             Row = row;
             Col = col;
 
@@ -55,7 +54,16 @@ namespace SpaceInvaders
             }
 
             // Calculate final position
-            Position = _enemiesManager.Position.Select(moverPos => moverPos + gridPos + centerPos).ToReadOnlyReactiveProperty();
+            Position = gridPos + centerPos;
+        }
+
+        public void Reset()
+        {
+            // Reset properties
+            Row = 0;
+            Col = 0;
+            Type = 0;
+            Position = Vector3.zero;
         }
 
         /// <summary>
