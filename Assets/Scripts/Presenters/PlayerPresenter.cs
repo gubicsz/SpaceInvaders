@@ -15,6 +15,7 @@ namespace SpaceInvaders
         [Inject] InputModel _input;
         [Inject] ProjectileSpawner _projectileSpawner;
         [Inject] GameStateModel _gameState;
+        [Inject] CameraShaker _cameraShaker;
         [Inject] IAudioService _audioService;
 
         private void Start()
@@ -53,6 +54,9 @@ namespace SpaceInvaders
                 {
                     // Play explosion sfx
                     _audioService.PlaySfx(Constants.Audio.Explosion, 0.15f);
+
+                    // Shake camera:
+                    _cameraShaker.Shake(0.25f, 0.25f);
 
                     // Despawn projectile
                     _projectileSpawner.Despawn(projectile);

@@ -16,6 +16,7 @@ namespace SpaceInvaders
             // Services
             Container.BindInterfacesAndSelfTo<StorageService>().AsSingle();
             Container.BindInterfacesAndSelfTo<AudioService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<CameraShaker>().AsSingle();
 
             // Player
             Container.Bind<PlayerModel>().AsSingle();
