@@ -4,6 +4,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
+using DG.Tweening;
 
 namespace SpaceInvaders
 {
@@ -36,11 +37,21 @@ namespace SpaceInvaders
             _player.Lives.SubscribeToText(_labelLives).AddTo(this);
 
             // Show screen hit effect when the player is damaged
-            _player.Lives.Pairwise().Where(lives => lives.Current < lives.Previous).Subscribe(async _ =>
+            _player.Lives.Pairwise().Where(lives => lives.Current < lives.Previous).Subscribe(_ =>
             {
-                _imageVignette.enabled = true;
-                await UniTask.Delay(250);
-                _imageVignette.enabled = false;
+                _imageVignette.DOFade(1f, 0.25f)
+                    .SetLoops(2, LoopType.Yoyo)
+                    .SetEase(Ease.OutQuint)
+                    .OnStart(() => _imageVignette.color = new Color(1f, 1f, 1f, 0f));
+            }).AddTo(this);
+
+            // Animate score label on increase
+            _gameplay.CurrentScore.Pairwise().Where(score => score.Current > score.Previous).Subscribe(_ =>
+            {
+                _labelScore.rectTransform
+                    .DOPunchScale(new Vector3(0.25f, 0.25f, 0f), 0.125f)
+                    .SetEase(Ease.OutQuint)
+                    .OnComplete(() => _labelScore.rectTransform.localScale = Vector3.one);
             }).AddTo(this);
         }
     }

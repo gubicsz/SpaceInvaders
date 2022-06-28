@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using System;
 using TMPro;
 using UniRx;
@@ -28,6 +29,9 @@ namespace SpaceInvaders
                 .Where(_ => gameObject.activeSelf)
                 .Subscribe(tick => _labelLoading.text = _loadingTexts[tick % _loadingTexts.Length])
                 .AddTo(this);
+
+            // Initialize 
+            DOTween.Init();
 
             // Load scores
             _scores.Load();

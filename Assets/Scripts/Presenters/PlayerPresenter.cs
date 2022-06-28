@@ -56,7 +56,7 @@ namespace SpaceInvaders
                     _audioService.PlaySfx(Constants.Audio.Explosion, 0.15f);
 
                     // Shake camera:
-                    _cameraShaker.Shake(0.25f, 0.25f);
+                    _cameraShaker.Shake(0.5f, 1.0f);
 
                     // Despawn projectile
                     _projectileSpawner.Despawn(projectile);
