@@ -54,6 +54,9 @@ namespace SpaceInvaders
             await _assetService.Load<AudioClip>(Constants.Audio.Explosion);
             await _assetService.Load<AudioClip>(Constants.Audio.Click);
             await _assetService.Load<AudioClip>(Constants.Audio.Music);
+
+            // Load materials
+            await _assetService.Load<Material>(Constants.Materials.Background);
         }
     }
 }

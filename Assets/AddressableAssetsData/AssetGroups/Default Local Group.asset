@@ -52,6 +52,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - audio
+  - m_GUID: 62b93c84978367b4a8fc57b300e98099
+    m_Address: Background
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - materials
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8abce442404ece045947089c5e396ddd, type: 2}
   m_SchemaSet:

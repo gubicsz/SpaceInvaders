@@ -14,4 +14,9 @@ public static class Constants
         public const string Click = "Click";
         public const string Music = "Music";
     }
+
+    public class Materials
+    {
+        public const string Background = "Background";
+    }
 }

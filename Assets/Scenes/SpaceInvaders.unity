@@ -333,6 +333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e88e2064c27c2d4e998e4f7d2c3d7ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _background: {fileID: 1403243414}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -525,7 +526,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1403243412}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -538,7 +539,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 62b93c84978367b4a8fc57b300e98099, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -764,7 +765,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1327172813206516579, guid: c8614308a91338544b30864140d311bc, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1327172813206516579, guid: c8614308a91338544b30864140d311bc, type: 3}
       propertyPath: m_AnchorMax.x
@@ -861,7 +862,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5228186491976099669, guid: 7031d1b54df12474cbecafaae3110218, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5228186491976099669, guid: 7031d1b54df12474cbecafaae3110218, type: 3}
       propertyPath: m_AnchorMax.x
@@ -954,7 +955,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6917994666907568790, guid: 9092017188129734bb5c83c2e04daa1c, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6917994666907568790, guid: 9092017188129734bb5c83c2e04daa1c, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1055,7 +1056,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8286862021330878195, guid: 211533c5704221e4095dfafe198f4868, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8286862021330878195, guid: 211533c5704221e4095dfafe198f4868, type: 3}
       propertyPath: m_AnchorMax.x

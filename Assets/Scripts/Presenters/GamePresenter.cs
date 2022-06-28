@@ -8,8 +8,11 @@ namespace SpaceInvaders
 {
     public class GamePresenter : MonoBehaviour
     {
+        [SerializeField] MeshRenderer _background;
+
         [Inject] IEnemiesManager _enemiesManager;
         [Inject] IAudioService _audioService;
+        [Inject] IAssetService _assetService;
         [Inject] GameStateModel _gameState;
         [Inject] GameplayModel _gameplay;
         [Inject] PlayerSpawner _playerSpawner;
@@ -21,6 +24,10 @@ namespace SpaceInvaders
 
         private void Start()
         {
+            // Load game background
+            _background.sharedMaterial = _assetService.Get<Material>(Constants.Materials.Background);
+            _background.enabled = true;
+
             // Handle game state transitions
             _gameState.State.Pairwise().Subscribe(transition => OnStateTransition(transition)).AddTo(this);
 
