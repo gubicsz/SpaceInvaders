@@ -5,6 +5,7 @@ public static class Constants
         public const string Enemy = "Enemy";
         public const string Player = "Player";
         public const string Projectile = "Projectile";
+        public const string Blast = "Blast";
     }
 
     public class Audio

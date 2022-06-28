@@ -57,6 +57,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - materials
+  - m_GUID: 37efe04afb2edae4dba1cea08fb468b1
+    m_Address: Blast
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - objects
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8abce442404ece045947089c5e396ddd, type: 2}
   m_SchemaSet:

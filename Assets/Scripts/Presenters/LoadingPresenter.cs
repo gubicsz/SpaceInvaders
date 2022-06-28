@@ -48,6 +48,7 @@ namespace SpaceInvaders
             await _assetService.Load<GameObject>(Constants.Objects.Enemy);
             await _assetService.Load<GameObject>(Constants.Objects.Player);
             await _assetService.Load<GameObject>(Constants.Objects.Projectile);
+            await _assetService.Load<GameObject>(Constants.Objects.Blast);
 
             // Load audio
             await _assetService.Load<AudioClip>(Constants.Audio.Blaster);

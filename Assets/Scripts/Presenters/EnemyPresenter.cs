@@ -9,10 +9,11 @@ namespace SpaceInvaders
         [SerializeField] GameObject[] _models;
 
         [Inject] EnemyModel _enemy;
-        [Inject] EnemySpawner _enemySpawner;
-        [Inject] EnemyConfig _enemyConfig;
-        [Inject] ProjectileSpawner _projectileSpawner;
         [Inject] GameplayModel _gameplay;
+        [Inject] EnemyConfig _enemyConfig;
+        [Inject] EnemySpawner _enemySpawner;
+        [Inject] ProjectileSpawner _projectileSpawner;
+        [Inject] ExplosionSpawner _explosionSpawner;
         [Inject] IAudioService _audioService;
 
         IMemoryPool _pool;
@@ -27,11 +28,14 @@ namespace SpaceInvaders
             // Handle projectile hit
             if (other.TryGetComponent(out ProjectilePresenter projectile))
             {
+                // Increase score by enemy type
+                _gameplay.CurrentScore.Value += (_enemy.Type + 1) * _enemyConfig.BaseScore;
+
                 // Play explosion sfx
                 _audioService.PlaySfx(Constants.Audio.Explosion, 0.15f);
 
-                // Increase score by enemy type
-                _gameplay.CurrentScore.Value += (_enemy.Type + 1) * _enemyConfig.BaseScore;
+                // Spawn explosion
+                _explosionSpawner.Spawn(transform.position);
 
                 // Despawn projectile
                 _projectileSpawner.Despawn(projectile);

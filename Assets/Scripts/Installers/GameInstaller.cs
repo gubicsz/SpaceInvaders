@@ -34,6 +34,11 @@ namespace SpaceInvaders
             Container.BindInterfacesAndSelfTo<ProjectileSpawner>().AsSingle();
             Container.BindFactory<Vector3, Vector3, float, ProjectilePresenter, ProjectilePresenter.Factory>().FromMonoPoolableMemoryPool(
                 x => x.WithInitialSize(8).FromComponentInNewPrefab(_assetService.Get<GameObject>(Constants.Objects.Projectile)).UnderTransformGroup("ProjectilePool"));
+
+            // Explosions
+            Container.BindInterfacesAndSelfTo<ExplosionSpawner>().AsSingle();
+            Container.BindFactory<Vector3, ExplosionPresenter, ExplosionPresenter.Factory>().FromMonoPoolableMemoryPool(
+                x => x.WithInitialSize(4).FromComponentInNewPrefab(_assetService.Get<GameObject>(Constants.Objects.Blast)).UnderTransformGroup("ExplosionPool"));
         }
     }
 }
