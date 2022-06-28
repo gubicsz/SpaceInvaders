@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player:
     Lives: 3
-    Invulnerability: 3
+    Invulnerability: 5
     Speed: 5
     FireRate: 0.5
     ProjectileSpeed: 20
