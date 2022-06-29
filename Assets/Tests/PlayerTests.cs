@@ -88,6 +88,7 @@ public class PlayerTests : ZenjectUnitTestFixture
     public async void PlayerShouldBecomeVulnerableAfterBeingDamaged()
     {
         await _player.DamageAsync();
+        await UniTask.Delay(100);
 
         Assert.That(!_player.IsInvulnerable.Value);
     }
@@ -100,6 +101,7 @@ public class PlayerTests : ZenjectUnitTestFixture
         Assert.That(_player.IsInvulnerable.Value);
 
         await UniTask.Delay(System.TimeSpan.FromSeconds(_config.Invulnerability));
+        await UniTask.Delay(100);
 
         Assert.That(!_player.IsInvulnerable.Value);
     }
