@@ -9,6 +9,8 @@ namespace SpaceInvaders
     public class PlayerPresenter : MonoBehaviour
     {
         [SerializeField] GameObject _shield;
+        [SerializeField] ParticleSystem _thrusterRight;
+        [SerializeField] ParticleSystem _thrusterLeft;
 
         [Inject] PlayerModel _player;
         [Inject] PlayerConfig _playerConfig;
@@ -35,6 +37,23 @@ namespace SpaceInvaders
             {
                 // Move based on horizontal input
                 _player.Move(_input.Horizontal, Time.deltaTime);
+
+                // Manage thruster particles based on horizontal input
+                if (_input.Horizontal > 0f)
+                {
+                    StopThruster(_thrusterRight);
+                    StartThruster(_thrusterLeft);
+                }
+                else if (_input.Horizontal < 0f)
+                {
+                    StopThruster(_thrusterLeft);
+                    StartThruster(_thrusterRight);
+                }
+                else
+                {
+                    StopThruster(_thrusterRight);
+                    StopThruster(_thrusterLeft);
+                }
 
                 // Shoot based on fire input
                 if (_input.Fire && _player.Shoot(Time.time))
@@ -75,6 +94,24 @@ namespace SpaceInvaders
                     }
                 }
             }).AddTo(this);
+        }
+
+        private void StartThruster(ParticleSystem particleSystem)
+        {
+            // Play the particle if needed
+            if (!particleSystem.isPlaying)
+            {
+                particleSystem.Play();
+            }
+        }
+
+        private void StopThruster(ParticleSystem particleSystem)
+        {
+            // Stop the particle if needed
+            if (particleSystem.isPlaying)
+            {
+                particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+            }
         }
 
         public class Factory : PlaceholderFactory<Object, PlayerPresenter>
