@@ -12,6 +12,7 @@ namespace SpaceInvaders
 
         [Inject] PlayerModel _player;
         [Inject] PlayerConfig _playerConfig;
+        [Inject] AudioConfig _audioConfig;
         [Inject] InputModel _input;
         [Inject] ProjectileSpawner _projectileSpawner;
         [Inject] GameStateModel _gameState;
@@ -52,6 +53,9 @@ namespace SpaceInvaders
             {
                 if (collider.TryGetComponent(out ProjectilePresenter projectile))
                 {
+                    // Duck music
+                    _audioService.DuckMusic(0.02f, _audioConfig.MusicVolume, 0.5f);
+
                     // Play explosion sfx
                     _audioService.PlaySfx(Constants.Audio.Explosion, 0.15f);
 

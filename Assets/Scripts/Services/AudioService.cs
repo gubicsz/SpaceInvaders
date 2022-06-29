@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using DG.Tweening;
 
 namespace SpaceInvaders
 {
@@ -16,6 +17,7 @@ namespace SpaceInvaders
 
         Transform _camTransform;
         AudioSource _music;
+        Tween _tween;
 
         public AudioService(IAssetService assetService)
         {
@@ -58,14 +60,30 @@ namespace SpaceInvaders
                 return;
             }
 
-            // Create and play music
-            var go = new GameObject("Music");
-            _music = go.AddComponent<AudioSource>();
-            _music.clip = clip;
-            _music.loop = true;
-            _music.volume = volume;
-            _music.spatialBlend = 0;
-            _music.Play();
+            // Create audio source if for the first time
+            if (_music == null)
+            {
+                var go = new GameObject("Music");// todo: create only once...
+                _music = go.AddComponent<AudioSource>();
+                _music.spatialBlend = 0;
+                _music.volume = 0;
+                _music.loop = true;
+            }
+
+            // Fade int music
+            _tween?.Kill();
+            _tween = _music.DOFade(volume, 2f)
+                .SetEase(Ease.InQuad)
+                .OnStart(() =>
+                {
+                    _music.clip = clip;
+                    _music.volume = 0f;
+                    _music.Play();
+                })
+                .OnComplete(() =>
+                {
+                    _music.volume = volume;
+                });
         }
 
         public void StopMusic()
@@ -76,10 +94,36 @@ namespace SpaceInvaders
                 return;
             }
 
-            // Stop and destroy music
-            _music.Stop();
-            UnityEngine.Object.Destroy(_music.gameObject);
-            _music = null;
+            // Fade out music
+            _tween?.Kill();
+            _tween = _music.DOFade(0f, 2f)
+                .SetEase(Ease.OutQuad)
+                .OnComplete(() =>
+                {
+                    _music.volume = 0f;
+                    _music.Stop();
+                });
+
+            
+        }
+
+        public void DuckMusic(float targetVolume, float originalVolume, float duration)
+        {
+            // Handle error
+            if (_music == null)
+            {
+                return;
+            }
+
+            // Duck music
+            _tween?.Kill();
+            _tween = _music.DOFade(targetVolume, duration)
+                .SetEase(Ease.OutQuad)
+                .SetLoops(2, LoopType.Yoyo)
+                .OnComplete(() =>
+                {
+                    _music.volume = originalVolume;
+                });
         }
     }
 }
