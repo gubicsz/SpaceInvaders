@@ -7,7 +7,7 @@ namespace SpaceInvaders
         private EnemyPresenter.Factory _factory;
         private EnemyConfig _enemyConfig;
 
-        private List<EnemyPresenter> _enemies = new List<EnemyPresenter>();
+        public List<EnemyPresenter> Enemies { get; private set; } = new List<EnemyPresenter>();
 
         public EnemySpawner(EnemyPresenter.Factory factory, EnemyConfig enemyConfig)
         {
@@ -15,8 +15,6 @@ namespace SpaceInvaders
             _factory = factory;
             _enemyConfig = enemyConfig;
         }
-
-        public IReadOnlyList<EnemyPresenter> Enemies => _enemies.AsReadOnly();
 
         public void SpawnAll()
         {
@@ -30,7 +28,7 @@ namespace SpaceInvaders
 
                     // Spawn and init enemy
                     EnemyPresenter enemy = _factory.Create(type, row, col);
-                    _enemies.Add(enemy);
+                    Enemies.Add(enemy);
                 }
             }
         }
@@ -38,26 +36,26 @@ namespace SpaceInvaders
         public void DespawnAll()
         {
             // Despawn enemies
-            foreach (var enemy in _enemies)
+            foreach (var enemy in Enemies)
             {
                 enemy.Dispose();
             }
 
             // Clear list
-            _enemies.Clear();
+            Enemies.Clear();
         }
 
         public void Despawn(EnemyPresenter enemy)
         {
             // Handle error
-            if (enemy == null || !_enemies.Contains(enemy))
+            if (enemy == null || !Enemies.Contains(enemy))
             {
                 return;
             }
 
             // Despawn enemy
             enemy.Dispose();
-            _enemies.Remove(enemy);
+            Enemies.Remove(enemy);
         }
     }
 }

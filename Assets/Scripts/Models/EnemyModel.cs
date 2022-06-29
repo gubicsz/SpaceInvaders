@@ -6,16 +6,28 @@ namespace SpaceInvaders
     [Serializable]
     public class EnemyConfig
     {
+        [Tooltip("Number of rows in the grid.")]
         [Range(1, 6)]
         public int Rows = 5;
+        [Tooltip("Number of columns in the grid.")]
         [Range(1, 15)]
         public int Columns = 11;
+        [Tooltip("Width of a cell in the grid.")]
         public float GridWidth = 2.5f;
+        [Tooltip("Height of a cell in the grid.")]
         public float GridHeight = 2f;
+        [Tooltip("Time between enemy projectiles in seconds.")]
         public float FireRate = 1f;
+        [Tooltip("Horizontal speed in m/s.")]
         public float SpeedHorizontal = 1f;
+        [Tooltip("Vertical speed in m/s.")]
         public float SpeedVertical = 1f;
+        [Tooltip("Multiplies horizontal speed based on the numer of enemies. The fewer the enemies the faster they go.")]
+        [Range(1f, 5f)]
+        public float SpeedMultiplier = 2f;
+        [Tooltip("Speed of an enemy projectile in m/s.")]
         public float ProjectileSpeed = 10.0f;
+        [Tooltip("Base score of an enemy. THis is multiplied by the enemy type.")]
         public int BaseScore = 10;
     }
 

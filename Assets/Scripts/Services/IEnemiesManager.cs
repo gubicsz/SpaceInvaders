@@ -27,8 +27,9 @@ namespace SpaceInvaders
         /// </summary>
         /// <param name="leftPos">The left position of the formation.</param>
         /// <param name="rightPos">The right position of the formation.</param>
+        /// <param name="enemyCount">The number of enemies in the formation.</param>
         /// <param name="dt">The delta time.</param>
-        void Move(Vector3 leftPos, Vector3 rightPos, float dt);
+        void Move(Vector3 leftPos, Vector3 rightPos, int enemyCount, float dt);
 
         /// <summary>
         /// Handles firing behavour of the formation based on the current time.

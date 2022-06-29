@@ -33,7 +33,7 @@ namespace SpaceInvaders
             _lastShotTime = 0;
         }
 
-        public void Move(Vector3 leftPos, Vector3 rightPos, float dt)
+        public void Move(Vector3 leftPos, Vector3 rightPos, int enemyCount, float dt)
         {
             // Reverse direction if the level bounds are reached
             if ((Direction.x > 0 && _levelConfig.IsPosOutOfHorizontalBounds(rightPos)) ||
@@ -43,8 +43,13 @@ namespace SpaceInvaders
                 Position += _enemyConfig.SpeedVertical * Vector3.back;
             }
 
+            // Calculate horizontal speed based on the number of enemies.
+            // The fewer the enemies the faster they go.
+            float enemiesPercent = 1 - (enemyCount / (float)(_enemyConfig.Columns * _enemyConfig.Rows));
+            float speed = (1 + enemiesPercent * _enemyConfig.SpeedMultiplier) * _enemyConfig.SpeedHorizontal;
+
             // Update position
-            Position += dt * _enemyConfig.SpeedHorizontal * Direction;
+            Position += dt * speed * Direction;
         }
 
         public bool Shoot(float time)

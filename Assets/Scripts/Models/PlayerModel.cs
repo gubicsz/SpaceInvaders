@@ -9,11 +9,17 @@ namespace SpaceInvaders
     [Serializable]
     public class PlayerConfig
     {
+        [Tooltip("Number of lives.")]
         public int Lives = 3;
+        [Tooltip("Duration of invulnerability in seconds.")]
         public float Invulnerability = 3.0f;
+        [Tooltip("Horizontal speed in m/s.")]
         public float Speed = 5.0f;
+        [Tooltip("Time between player projectiles in seconds.")]
         public float FireRate = 0.5f;
+        [Tooltip("Speed of a player projectile in m/s.")]
         public float ProjectileSpeed = 15.0f;
+        [Tooltip("Position of the player at start.")]
         public Vector3 SpawnPosition = new Vector3(0f, 0f, -10f);
     }
 
