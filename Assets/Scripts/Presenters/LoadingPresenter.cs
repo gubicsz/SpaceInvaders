@@ -32,6 +32,7 @@ namespace SpaceInvaders
 
             // Initialize 
             DOTween.Init();
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
             // Load scores
             _scores.Load();
