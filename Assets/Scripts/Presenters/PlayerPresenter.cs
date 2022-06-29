@@ -1,14 +1,17 @@
-using UnityEngine;
-using Zenject;
+using Cysharp.Threading.Tasks;
+using System;
 using UniRx;
 using UniRx.Triggers;
-using Cysharp.Threading.Tasks;
+using UnityEngine;
+using Zenject;
 
 namespace SpaceInvaders
 {
     public class PlayerPresenter : MonoBehaviour
     {
-        [SerializeField] GameObject _shield;
+        [SerializeField] Light _light;
+        [SerializeField] ParticleSystem _shield;
+        [SerializeField] ParticleSystem _muzzleFlash;
         [SerializeField] ParticleSystem _thrusterRight;
         [SerializeField] ParticleSystem _thrusterLeft;
 
@@ -30,7 +33,14 @@ namespace SpaceInvaders
             _player.Position.Subscribe(pos => transform.position = pos).AddTo(this);
 
             // Set shield state based on invulnerability
-            _player.IsInvulnerable.Subscribe(isInvulnerable => _shield.SetActive(isInvulnerable)).AddTo(this);
+            _player.IsInvulnerable.Subscribe(isInvulnerable =>
+            {
+                if (isInvulnerable && !_shield.isPlaying)
+                    _shield.Play();
+                else if (!isInvulnerable && _shield.isPlaying)
+                    _shield.Stop();
+
+            }).AddTo(this);
 
             // Control player
             Observable.EveryUpdate().Subscribe(_ =>
@@ -64,6 +74,9 @@ namespace SpaceInvaders
 
                     // Play blaster sfx
                     _audioService.PlaySfx(Constants.Audio.Blaster, 0.25f);
+
+                    // Flash light
+                    FlashLight();
                 }
             }).AddTo(this);
 
@@ -114,7 +127,17 @@ namespace SpaceInvaders
             }
         }
 
-        public class Factory : PlaceholderFactory<Object, PlayerPresenter>
+        private void FlashLight()
+        {
+            // Enable light for 100 ms
+            Observable.Timer(TimeSpan.FromMilliseconds(100))
+                .DoOnSubscribe(() => _light.enabled = true)
+                .Subscribe(_ => _light.enabled = false).AddTo(this);
+
+            _muzzleFlash.Play(true);
+        }
+
+        public class Factory : PlaceholderFactory<UnityEngine.Object, PlayerPresenter>
         {
         }
     }
