@@ -1,12 +1,15 @@
+using SpaceInvaders.Models;
+using SpaceInvaders.Presenters;
 using UnityEngine;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Services
 {
     public class PlayerSpawner
     {
-        private PlayerPresenter.Factory _factory;
-        private PlayerPresenter _player;
-        private IAssetService _assetService;
+        readonly PlayerPresenter.Factory _factory;
+        readonly IAssetService _assetService;
+
+        PlayerPresenter _player;
 
         public PlayerSpawner(PlayerPresenter.Factory factory, IAssetService assetService)
         {

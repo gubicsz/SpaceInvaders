@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using DG.Tweening;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Services
 {
     [Serializable]
     public class AudioConfig
@@ -13,7 +13,7 @@ namespace SpaceInvaders
 
     public class AudioService : IAudioService
     {
-        IAssetService _assetService;
+        readonly IAssetService _assetService;
 
         Transform _camTransform;
         AudioSource _music;

@@ -1,14 +1,16 @@
+using SpaceInvaders.Models;
+using SpaceInvaders.Services;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Helpers
 {
     [RequireComponent(typeof(Button))]
     public class ButtonSfx : MonoBehaviour
     {
-        [Inject] IAudioService _audioService;
+        [Inject] readonly IAudioService _audioService;
 
         private void Start()
         {

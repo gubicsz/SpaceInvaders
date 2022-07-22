@@ -1,4 +1,4 @@
-namespace SpaceInvaders
+namespace SpaceInvaders.Models
 {
     public class InputModel
     {

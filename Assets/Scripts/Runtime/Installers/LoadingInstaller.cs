@@ -1,6 +1,6 @@
 using Zenject;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Installers
 {
     public class LoadingInstaller : MonoInstaller
     {

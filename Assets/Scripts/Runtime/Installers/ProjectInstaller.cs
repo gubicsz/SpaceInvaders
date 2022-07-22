@@ -1,6 +1,8 @@
+using SpaceInvaders.Models;
+using SpaceInvaders.Services;
 using Zenject;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Installers
 {
     public class ProjectInstaller : MonoInstaller
     {

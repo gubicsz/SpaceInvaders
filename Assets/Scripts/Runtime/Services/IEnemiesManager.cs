@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Services
 {
     /// <summary>
     /// Manages enemy grid formation movement and shooting.

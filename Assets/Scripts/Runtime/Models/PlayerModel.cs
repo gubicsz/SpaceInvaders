@@ -1,10 +1,11 @@
 using Cysharp.Threading.Tasks;
+using SpaceInvaders.Helpers;
 using System;
 using System.Linq;
 using UniRx;
 using UnityEngine;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Models
 {
     [Serializable]
     public class PlayerConfig
@@ -47,8 +48,8 @@ namespace SpaceInvaders
         public ReadOnlyReactiveProperty<bool> IsDead { get; private set; }
         public float ShotTime { get; private set; }
 
-        private PlayerConfig _playerConfig;
-        private LevelConfig _levelConfig;
+        private readonly PlayerConfig _playerConfig;
+        private readonly LevelConfig _levelConfig;
 
         public PlayerModel(PlayerConfig playerConfig, LevelConfig levelConfig)
         {

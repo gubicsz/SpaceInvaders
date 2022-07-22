@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Services
 {
     public class StorageService : IStorageService
     {

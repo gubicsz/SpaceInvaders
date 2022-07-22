@@ -1,20 +1,22 @@
+using SpaceInvaders.Models;
+using SpaceInvaders.Services;
 using System;
 using UnityEngine;
 using Zenject;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Presenters
 {
     public class EnemyPresenter : MonoBehaviour, IPoolable<int, int, int, IMemoryPool>, IDisposable
     {
         [SerializeField] GameObject[] _models;
 
-        [Inject] EnemyModel _enemy;
-        [Inject] GameplayModel _gameplay;
-        [Inject] EnemyConfig _enemyConfig;
-        [Inject] EnemySpawner _enemySpawner;
-        [Inject] ProjectileSpawner _projectileSpawner;
-        [Inject] ExplosionSpawner _explosionSpawner;
-        [Inject] IAudioService _audioService;
+        [Inject] readonly EnemyModel _enemy;
+        [Inject] readonly GameplayModel _gameplay;
+        [Inject] readonly EnemyConfig _enemyConfig;
+        [Inject] readonly EnemySpawner _enemySpawner;
+        [Inject] readonly ProjectileSpawner _projectileSpawner;
+        [Inject] readonly ExplosionSpawner _explosionSpawner;
+        [Inject] readonly IAudioService _audioService;
 
         IMemoryPool _pool;
 

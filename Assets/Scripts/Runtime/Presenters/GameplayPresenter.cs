@@ -1,12 +1,14 @@
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using SpaceInvaders.Helpers;
+using SpaceInvaders.Models;
 using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
-using DG.Tweening;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Presenters
 {
     public class GameplayPresenter : MonoBehaviour
     {
@@ -16,9 +18,9 @@ namespace SpaceInvaders
         [SerializeField] TextMeshProUGUI _labelLives;
         [SerializeField] Image _imageVignette;
 
-        [Inject] GameStateModel _gameState;
-        [Inject] GameplayModel _gameplay;
-        [Inject] PlayerModel _player;
+        [Inject] readonly GameStateModel _gameState;
+        [Inject] readonly GameplayModel _gameplay;
+        [Inject] readonly PlayerModel _player;
 
         private void Start()
         {

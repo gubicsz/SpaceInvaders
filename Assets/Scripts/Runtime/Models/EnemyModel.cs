@@ -1,7 +1,8 @@
+using SpaceInvaders.Helpers;
 using System;
 using UnityEngine;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Models
 {
     [Serializable]
     public class EnemyConfig
@@ -38,7 +39,7 @@ namespace SpaceInvaders
         public int Col { get; private set; }
         public Vector3 Position { get; private set; }
 
-        private EnemyConfig _enemyConfig;    
+        private readonly EnemyConfig _enemyConfig;    
 
         public EnemyModel(EnemyConfig enemyConfig)
         {

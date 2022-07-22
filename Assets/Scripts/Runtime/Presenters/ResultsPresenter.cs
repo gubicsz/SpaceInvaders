@@ -1,3 +1,5 @@
+using SpaceInvaders.Helpers;
+using SpaceInvaders.Models;
 using System;
 using TMPro;
 using UniRx;
@@ -5,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Presenters
 {
     public class ResultsPresenter : MonoBehaviour
     {
@@ -13,9 +15,9 @@ namespace SpaceInvaders
         [SerializeField] TextMeshProUGUI _labelScore;
         [SerializeField] TextMeshProUGUI _labelWaves;
 
-        [Inject] GameStateModel _gameState;
-        [Inject] GameplayModel _gameplay;
-        [Inject] ScoresModel _scores;
+        [Inject] readonly GameStateModel _gameState;
+        [Inject] readonly GameplayModel _gameplay;
+        [Inject] readonly ScoresModel _scores;
 
         private void Start()
         {

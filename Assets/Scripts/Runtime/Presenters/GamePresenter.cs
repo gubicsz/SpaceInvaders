@@ -1,26 +1,28 @@
 using Cysharp.Threading.Tasks;
+using SpaceInvaders.Models;
+using SpaceInvaders.Services;
 using System.Linq;
 using UniRx;
 using UnityEngine;
 using Zenject;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Presenters
 {
     public class GamePresenter : MonoBehaviour
     {
         [SerializeField] MeshRenderer _background;
 
-        [Inject] IEnemiesManager _enemiesManager;
-        [Inject] IAudioService _audioService;
-        [Inject] IAssetService _assetService;
-        [Inject] GameStateModel _gameState;
-        [Inject] GameplayModel _gameplay;
-        [Inject] PlayerSpawner _playerSpawner;
-        [Inject] ProjectileSpawner _projectileSpawner;
-        [Inject] EnemySpawner _enemySpawner;
-        [Inject] EnemyConfig _enemyConfig;
-        [Inject] LevelConfig _levelConfig;
-        [Inject] AudioConfig _audioConfig;
+        [Inject] readonly IEnemiesManager _enemiesManager;
+        [Inject] readonly IAudioService _audioService;
+        [Inject] readonly IAssetService _assetService;
+        [Inject] readonly GameStateModel _gameState;
+        [Inject] readonly GameplayModel _gameplay;
+        [Inject] readonly PlayerSpawner _playerSpawner;
+        [Inject] readonly ProjectileSpawner _projectileSpawner;
+        [Inject] readonly EnemySpawner _enemySpawner;
+        [Inject] readonly EnemyConfig _enemyConfig;
+        [Inject] readonly LevelConfig _levelConfig;
+        [Inject] readonly AudioConfig _audioConfig;
 
         private void Start()
         {

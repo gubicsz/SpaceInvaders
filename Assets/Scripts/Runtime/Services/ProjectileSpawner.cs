@@ -1,17 +1,17 @@
+using SpaceInvaders.Presenters;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Services
 {
     public class ProjectileSpawner
     {
-        private ProjectilePresenter.Factory _factory;
+        readonly ProjectilePresenter.Factory _factory;
 
-        private List<ProjectilePresenter> _projectiles = new List<ProjectilePresenter>();
+        readonly List<ProjectilePresenter> _projectiles = new();
 
         public ProjectileSpawner(ProjectilePresenter.Factory factory)
         {
-            // Set references
             _factory = factory;
         }
 

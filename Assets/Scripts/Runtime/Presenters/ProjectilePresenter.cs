@@ -1,16 +1,18 @@
+using SpaceInvaders.Models;
+using SpaceInvaders.Services;
 using System;
 using UnityEngine;
 using Zenject;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Presenters
 {
     public class ProjectilePresenter : MonoBehaviour, IPoolable<Vector3, Vector3, float, IMemoryPool>, IDisposable
     {
         [SerializeField] Collider _collider;
 
-        [Inject] ProjectileModel _projectile;
-        [Inject] ProjectileSpawner _projectileSpawner;
-        [Inject] IAudioService _audioService;
+        [Inject] readonly ProjectileModel _projectile;
+        [Inject] readonly ProjectileSpawner _projectileSpawner;
+        [Inject] readonly IAudioService _audioService;
 
         IMemoryPool _pool;
 

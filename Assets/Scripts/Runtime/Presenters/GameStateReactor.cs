@@ -1,10 +1,12 @@
+using SpaceInvaders.Helpers;
+using SpaceInvaders.Models;
 using Zenject;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Presenters
 {
     public class GameStateReactor : StateReactor<GameState>
     {
-        [Inject] GameStateModel _gameState;
+        [Inject] readonly GameStateModel _gameState;
 
         protected override StateModel<GameState> Model => _gameState;
     }

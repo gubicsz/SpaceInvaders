@@ -1,179 +1,182 @@
 using Cysharp.Threading.Tasks;
 using NUnit.Framework;
-using SpaceInvaders;
+using SpaceInvaders.Models;
 using UnityEngine;
 using Zenject;
 
-[TestFixture]
-public class PlayerTests : ZenjectUnitTestFixture
+namespace SpaceInvaders.Tests
 {
-    [SetUp]
-    public void CommonInstall()
+    [TestFixture]
+    public class PlayerTests : ZenjectUnitTestFixture
     {
-        Container.Bind<PlayerConfig>().AsSingle();
-        Container.Bind<LevelConfig>().AsSingle();
-        Container.Bind<PlayerModel>().AsSingle();
-        Container.Inject(this);
-    }
+        [SetUp]
+        public void CommonInstall()
+        {
+            Container.Bind<PlayerConfig>().AsSingle();
+            Container.Bind<LevelConfig>().AsSingle();
+            Container.Bind<PlayerModel>().AsSingle();
+            Container.Inject(this);
+        }
 
-    [Inject] PlayerModel _player;
-    [Inject] PlayerConfig _config;
-    [Inject] LevelConfig _level;
+        [Inject] readonly PlayerModel _player;
+        [Inject] readonly PlayerConfig _config;
+        [Inject] readonly LevelConfig _level;
 
-    [Test]
-    public void PlayerShouldStartAtSpawnPosition()
-    {
-        Assert.That(_player.Position.Value == _config.SpawnPosition);
-    }
+        [Test]
+        public void PlayerShouldStartAtSpawnPosition()
+        {
+            Assert.That(_player.Position.Value == _config.SpawnPosition);
+        }
 
-    [Test]
-    public void PlayerShouldBeAliveAtStart()
-    {
-        Assert.That(_player.Lives.Value == _config.Lives);
-        Assert.That(!_player.IsDead.Value);
-    }
+        [Test]
+        public void PlayerShouldBeAliveAtStart()
+        {
+            Assert.That(_player.Lives.Value == _config.Lives);
+            Assert.That(!_player.IsDead.Value);
+        }
 
-    [Test]
-    public void PlayerShouldBeVulnerableAtStart()
-    {
-        Assert.That(!_player.IsInvulnerable.Value);
-    }
+        [Test]
+        public void PlayerShouldBeVulnerableAtStart()
+        {
+            Assert.That(!_player.IsInvulnerable.Value);
+        }
 
-    [Test]
-    public async void PlayerShouldBeDamagableAtStart()
-    {
-        bool isDamaged = await _player.DamageAsync();
+        [Test]
+        public async void PlayerShouldBeDamagableAtStart()
+        {
+            bool isDamaged = await _player.DamageAsync();
 
-        Assert.That(isDamaged);
-    }
+            Assert.That(isDamaged);
+        }
 
-    [Test]
-    public async void PlayerShouldNotBeDamagableWhenDead()
-    {
-        _player.Lives.Value = 0;
+        [Test]
+        public async void PlayerShouldNotBeDamagableWhenDead()
+        {
+            _player.Lives.Value = 0;
 
-        bool isDamaged = await _player.DamageAsync();
+            bool isDamaged = await _player.DamageAsync();
 
-        Assert.That(!isDamaged);
-    }
+            Assert.That(!isDamaged);
+        }
 
-    [Test]
-    public async void PlayerShouldNotBeDamagableWhenInvulnerable()
-    {
-        _player.IsInvulnerable.Value = true;
+        [Test]
+        public async void PlayerShouldNotBeDamagableWhenInvulnerable()
+        {
+            _player.IsInvulnerable.Value = true;
 
-        bool isDamaged = await _player.DamageAsync();
+            bool isDamaged = await _player.DamageAsync();
 
-        Assert.That(!isDamaged);
-    }
+            Assert.That(!isDamaged);
+        }
 
-    [Test]
-    public void PlayerShouldLoseALifeWhenHit()
-    {
-        int lives = _player.Lives.Value;
-        _player.DamageAsync().Forget();
+        [Test]
+        public void PlayerShouldLoseALifeWhenHit()
+        {
+            int lives = _player.Lives.Value;
+            _player.DamageAsync().Forget();
 
-        Assert.That(_player.Lives.Value == (lives - 1));
-    }
+            Assert.That(_player.Lives.Value == (lives - 1));
+        }
 
-    [Test]
-    public void PlayerShouldBecomeInvulnerableWhenHit()
-    {
-        _player.DamageAsync().Forget();
+        [Test]
+        public void PlayerShouldBecomeInvulnerableWhenHit()
+        {
+            _player.DamageAsync().Forget();
 
-        Assert.That(_player.IsInvulnerable.Value);
-    }
+            Assert.That(_player.IsInvulnerable.Value);
+        }
 
-    [Test]
-    public async void PlayerShouldBecomeVulnerableAfterBeingDamaged()
-    {
-        await _player.DamageAsync();
-        await UniTask.Delay(100);
+        [Test]
+        public async void PlayerShouldBecomeVulnerableAfterBeingDamaged()
+        {
+            await _player.DamageAsync();
+            await UniTask.Delay(100);
 
-        Assert.That(!_player.IsInvulnerable.Value);
-    }
+            Assert.That(!_player.IsInvulnerable.Value);
+        }
 
-    [Test]
-    public async void PlayerShouldBeInvulnerableForTheSpecifiedDuration()
-    {
-        _player.DamageAsync().Forget();
+        [Test]
+        public async void PlayerShouldBeInvulnerableForTheSpecifiedDuration()
+        {
+            _player.DamageAsync().Forget();
 
-        Assert.That(_player.IsInvulnerable.Value);
+            Assert.That(_player.IsInvulnerable.Value);
 
-        await UniTask.Delay(System.TimeSpan.FromSeconds(_config.Invulnerability));
-        await UniTask.Delay(100);
+            await UniTask.Delay(System.TimeSpan.FromSeconds(_config.Invulnerability));
+            await UniTask.Delay(100);
 
-        Assert.That(!_player.IsInvulnerable.Value);
-    }
+            Assert.That(!_player.IsInvulnerable.Value);
+        }
 
-    [Test]
-    public void PlayerShouldBeResetedProperly()
-    {
-        _player.Position.Value = Vector3.right;
-        _player.DamageAsync().Forget();
-        _player.Shoot(10f);
+        [Test]
+        public void PlayerShouldBeResetedProperly()
+        {
+            _player.Position.Value = Vector3.right;
+            _player.DamageAsync().Forget();
+            _player.Shoot(10f);
 
-        _player.Reset();
+            _player.Reset();
 
-        Assert.That(_player.Position.Value == _config.SpawnPosition);
-        Assert.That(_player.Lives.Value == _config.Lives);
-        Assert.That(!_player.IsInvulnerable.Value);
-        Assert.That(_player.ShotTime == float.MinValue);
-    }
+            Assert.That(_player.Position.Value == _config.SpawnPosition);
+            Assert.That(_player.Lives.Value == _config.Lives);
+            Assert.That(!_player.IsInvulnerable.Value);
+            Assert.That(_player.ShotTime == float.MinValue);
+        }
 
-    [Test]
-    public void PlayerShouldMoveByTheExactAmount()
-    {
-        float h = 1f;
-        float dt = 1f / 60f;
-        float x = h * dt * _config.Speed;
+        [Test]
+        public void PlayerShouldMoveByTheExactAmount()
+        {
+            float h = 1f;
+            float dt = 1f / 60f;
+            float x = h * dt * _config.Speed;
 
-        _player.Move(h, dt);
+            _player.Move(h, dt);
 
-        Assert.That(_player.Position.Value.x == x);
-    }
+            Assert.That(_player.Position.Value.x == x);
+        }
 
-    [Test]
-    public void PlayerShouldNotMoveOutOfBounds()
-    {
-        float h = 1f;
-        float dt = 1f / 60f;
-        _player.Position.Value = new Vector3(_level.Bounds.x, 
-            _player.Position.Value.y, _player.Position.Value.z);
+        [Test]
+        public void PlayerShouldNotMoveOutOfBounds()
+        {
+            float h = 1f;
+            float dt = 1f / 60f;
+            _player.Position.Value = new Vector3(_level.Bounds.x,
+                _player.Position.Value.y, _player.Position.Value.z);
 
-        _player.Move(h, dt);
+            _player.Move(h, dt);
 
-        Assert.That(_player.Position.Value.x == _level.Bounds.x);
-    }
+            Assert.That(_player.Position.Value.x == _level.Bounds.x);
+        }
 
-    [Test]
-    public void PlayerShouldBeAbleToShootAtStart()
-    {
-        float currentTime = 0f;
+        [Test]
+        public void PlayerShouldBeAbleToShootAtStart()
+        {
+            float currentTime = 0f;
 
-        bool shot = _player.Shoot(currentTime);
+            bool shot = _player.Shoot(currentTime);
 
-        Assert.That(shot);
-        Assert.That(_player.ShotTime == currentTime);
-    }
+            Assert.That(shot);
+            Assert.That(_player.ShotTime == currentTime);
+        }
 
-    [Test]
-    public void PlayerShouldNotBeAbleToShootTwiceAtTheSameTime()
-    {
-        bool shot1 = _player.Shoot(0f);
-        bool shot2 = _player.Shoot(0f);
+        [Test]
+        public void PlayerShouldNotBeAbleToShootTwiceAtTheSameTime()
+        {
+            bool shot1 = _player.Shoot(0f);
+            bool shot2 = _player.Shoot(0f);
 
-        Assert.That(shot1);
-        Assert.That(!shot2);
-    }
+            Assert.That(shot1);
+            Assert.That(!shot2);
+        }
 
-    [Test]
-    public void PlayerShouldBeAbleToShootBasedOnFireRate()
-    {
-        bool shot1 = _player.Shoot(0f);
-        bool shot2 = _player.Shoot(_config.FireRate);
+        [Test]
+        public void PlayerShouldBeAbleToShootBasedOnFireRate()
+        {
+            bool shot1 = _player.Shoot(0f);
+            bool shot2 = _player.Shoot(_config.FireRate);
 
-        Assert.That(shot1);
-        Assert.That(shot2);
+            Assert.That(shot1);
+            Assert.That(shot2);
+        }
     }
 }

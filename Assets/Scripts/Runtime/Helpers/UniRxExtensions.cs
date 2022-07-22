@@ -1,7 +1,8 @@
 using System;
 using TMPro;
+using UniRx;
 
-namespace UniRx
+namespace SpaceInvaders.Helpers
 {
     public static class UniRxExtensions
     {

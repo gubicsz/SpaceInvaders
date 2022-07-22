@@ -1,16 +1,17 @@
+using SpaceInvaders.Models;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Presenters
 {
     public class MenuPresenter : MonoBehaviour
     {
         [SerializeField] Button _buttonStart;
         [SerializeField] Button _buttonScores;
 
-        [Inject] GameStateModel _gameState;
+        [Inject] readonly GameStateModel _gameState;
 
         private void Start()
         {

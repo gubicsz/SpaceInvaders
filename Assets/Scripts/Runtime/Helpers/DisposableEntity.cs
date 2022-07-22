@@ -1,11 +1,11 @@
 using System;
 using UniRx;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Helpers
 {
     public class DisposableEntity : IDisposable
     {
-		private readonly CompositeDisposable _disposables = new CompositeDisposable();
+		private readonly CompositeDisposable _disposables = new();
 
 		~DisposableEntity()
         {
