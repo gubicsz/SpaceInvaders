@@ -1,4 +1,6 @@
-namespace SpaceInvaders
+using SpaceInvaders.Helpers;
+
+namespace SpaceInvaders.Models
 {
     public enum GameState
     {

@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Services
 {
     /// <summary>
     /// Manages runtime asset loading.

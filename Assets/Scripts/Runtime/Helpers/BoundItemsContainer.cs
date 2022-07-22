@@ -4,7 +4,7 @@ using System.Linq;
 using UniRx;
 using UnityEngine;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Helpers
 {
     /// <summary>
     /// Automatically creates and destroys Views (GameObjects) as models are added to the underlying ReactiveCollection.
@@ -12,12 +12,12 @@ namespace SpaceInvaders
     /// <typeparam name="T"></typeparam>
     public class BoundItemsContainer<T> : IDisposable
     {
-        private CompositeDisposable _disposableList = new CompositeDisposable();
+        private readonly CompositeDisposable _disposableList = new();
 
         /// <summary>
         /// A dictionary indexed by the models, containing the instantiated GameObject for every model
         /// </summary>
-        public readonly Dictionary<T, GameObject> InstantiatedGameObjects = new Dictionary<T, GameObject>();
+        public readonly Dictionary<T, GameObject> InstantiatedGameObjects = new();
 
         /// <summary>
         /// The prefab to be instantiated for the models

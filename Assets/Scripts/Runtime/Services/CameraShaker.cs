@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Services
 {
     public class CameraShaker
     {

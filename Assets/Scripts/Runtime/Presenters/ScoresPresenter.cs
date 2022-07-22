@@ -1,10 +1,12 @@
+using SpaceInvaders.Helpers;
+using SpaceInvaders.Models;
 using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Presenters
 {
     public class ScoresPresenter : MonoBehaviour
     {
@@ -12,8 +14,8 @@ namespace SpaceInvaders
         [SerializeField] TextMeshProUGUI _itemPrefab;
         [SerializeField] VerticalLayoutGroup _itemHolder;
 
-        [Inject] GameStateModel _gameState;
-        [Inject] ScoresModel _scores;
+        [Inject] readonly GameStateModel _gameState;
+        [Inject] readonly ScoresModel _scores;
 
         private BoundItemsContainer<ScoreItem> _scoresContainer;
 

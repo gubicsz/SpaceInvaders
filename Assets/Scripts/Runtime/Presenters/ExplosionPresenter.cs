@@ -1,15 +1,16 @@
 using Cysharp.Threading.Tasks;
+using SpaceInvaders.Services;
 using System;
 using UnityEngine;
 using Zenject;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Presenters
 {
     public class ExplosionPresenter : MonoBehaviour, IPoolable<Vector3, IMemoryPool>, IDisposable
     {
         [SerializeField] ParticleSystem _particle;
 
-        [Inject] ExplosionSpawner _particleSpawner;
+        [Inject] readonly ExplosionSpawner _particleSpawner;
 
         IMemoryPool _pool;
 

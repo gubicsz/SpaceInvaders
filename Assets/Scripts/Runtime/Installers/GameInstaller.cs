@@ -1,11 +1,14 @@
+using SpaceInvaders.Models;
+using SpaceInvaders.Presenters;
+using SpaceInvaders.Services;
 using UnityEngine;
 using Zenject;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Installers
 {
     public class GameInstaller : MonoInstaller
     {
-        [Inject] IAssetService _assetService;
+        [Inject] readonly IAssetService _assetService;
 
         public override void InstallBindings()
         {

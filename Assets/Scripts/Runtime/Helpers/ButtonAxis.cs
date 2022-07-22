@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Helpers
 {
     public class ButtonAxis : MonoBehaviour
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Helpers
 {
     /// <summary>
     /// Controls the visibility of an object based on the specified states.

@@ -1,11 +1,13 @@
+using SpaceInvaders.Models;
+using SpaceInvaders.Presenters;
 using System.Collections.Generic;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Services
 {
     public class EnemySpawner
     {
-        private EnemyPresenter.Factory _factory;
-        private EnemyConfig _enemyConfig;
+        readonly EnemyPresenter.Factory _factory;
+        readonly EnemyConfig _enemyConfig;
 
         public List<EnemyPresenter> Enemies { get; private set; } = new List<EnemyPresenter>();
 

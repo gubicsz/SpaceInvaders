@@ -1,9 +1,10 @@
+using SpaceInvaders.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UniRx;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Models
 {
     [Serializable]
     public class ScoreItem
@@ -22,7 +23,7 @@ namespace SpaceInvaders
     {
         public ReactiveCollection<ScoreItem> Scoreboard { get; private set; }
 
-        private IStorageService _storageService;
+        private readonly IStorageService _storageService;
 
         private const string _storageKey = "Scoreboard";
 

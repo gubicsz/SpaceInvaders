@@ -1,16 +1,18 @@
+using SpaceInvaders.Helpers;
+using SpaceInvaders.Models;
 using UniRx;
 using UnityEngine;
 using Zenject;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Presenters
 {
     public class InputPresenter : MonoBehaviour
     {
         [SerializeField] ButtonAxis ButtonHorizontal;
         [SerializeField] ButtonTouch ButtonFire;
 
-        [Inject] InputModel _input;
-        [Inject] GameStateModel _gameState;
+        [Inject] readonly InputModel _input;
+        [Inject] readonly GameStateModel _gameState;
 
         private const string _axisHorizontal = "Horizontal";
         private const string _buttonFire = "Jump";

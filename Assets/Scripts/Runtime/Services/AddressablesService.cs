@@ -5,12 +5,12 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Services
 {
     public class AddressablesService : IAssetService, IDisposable
     {
-        private Dictionary<string, object> _assets = new Dictionary<string, object>();
-        private List<AsyncOperationHandle> _handles = new List<AsyncOperationHandle>();
+        readonly Dictionary<string, object> _assets = new();
+        readonly List<AsyncOperationHandle> _handles = new();
 
         public async UniTask Load<T>(string key)
         {

@@ -1,5 +1,7 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using SpaceInvaders.Models;
+using SpaceInvaders.Services;
 using System;
 using TMPro;
 using UniRx;
@@ -7,17 +9,17 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Presenters
 {
     public class LoadingPresenter : MonoBehaviour
     {
         [SerializeField] TextMeshProUGUI _labelLoading;
 
-        [Inject] IAssetService _assetService;
-        [Inject] GameStateModel _gameState;
-        [Inject] ScoresModel _scores;
+        [Inject] readonly IAssetService _assetService;
+        [Inject] readonly GameStateModel _gameState;
+        [Inject] readonly ScoresModel _scores;
 
-        string[] _loadingTexts = new string[4]
+        readonly string[] _loadingTexts = new string[4]
         {
             "Loading", "Loading.", "Loading..", "Loading..."
         };

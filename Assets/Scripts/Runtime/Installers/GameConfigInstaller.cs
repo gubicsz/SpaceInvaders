@@ -1,7 +1,9 @@
+using SpaceInvaders.Models;
+using SpaceInvaders.Services;
 using UnityEngine;
 using Zenject;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Installers
 {
     [CreateAssetMenu(fileName = "GameConfigInstaller", menuName = "Installers/GameConfigInstaller")]
     public class GameConfigInstaller : ScriptableObjectInstaller<GameConfigInstaller>

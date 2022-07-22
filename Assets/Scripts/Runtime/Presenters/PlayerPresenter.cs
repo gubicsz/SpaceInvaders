@@ -1,11 +1,13 @@
 using Cysharp.Threading.Tasks;
+using SpaceInvaders.Models;
+using SpaceInvaders.Services;
 using System;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
 using Zenject;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Presenters
 {
     public class PlayerPresenter : MonoBehaviour
     {
@@ -15,14 +17,14 @@ namespace SpaceInvaders
         [SerializeField] ParticleSystem _thrusterRight;
         [SerializeField] ParticleSystem _thrusterLeft;
 
-        [Inject] PlayerModel _player;
-        [Inject] PlayerConfig _playerConfig;
-        [Inject] AudioConfig _audioConfig;
-        [Inject] InputModel _input;
-        [Inject] ProjectileSpawner _projectileSpawner;
-        [Inject] GameStateModel _gameState;
-        [Inject] CameraShaker _cameraShaker;
-        [Inject] IAudioService _audioService;
+        [Inject] readonly PlayerModel _player;
+        [Inject] readonly PlayerConfig _playerConfig;
+        [Inject] readonly AudioConfig _audioConfig;
+        [Inject] readonly InputModel _input;
+        [Inject] readonly ProjectileSpawner _projectileSpawner;
+        [Inject] readonly GameStateModel _gameState;
+        [Inject] readonly CameraShaker _cameraShaker;
+        [Inject] readonly IAudioService _audioService;
 
         private void Start()
         {

@@ -1,6 +1,7 @@
+using SpaceInvaders.Models;
 using UnityEngine;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Services
 {
     public class EnemiesManager : IEnemiesManager
     {
@@ -10,9 +11,10 @@ namespace SpaceInvaders
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
 
-        private LevelConfig _levelConfig;
-        private EnemyConfig _enemyConfig;
-        private float _lastShotTime;
+        readonly LevelConfig _levelConfig;
+        readonly EnemyConfig _enemyConfig;
+
+        float _lastShotTime;
 
         public EnemiesManager(LevelConfig levelConfig, EnemyConfig enemyConfig)
         {

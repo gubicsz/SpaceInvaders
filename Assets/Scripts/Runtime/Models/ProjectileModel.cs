@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Models
 {
     public class ProjectileModel
     {
@@ -8,7 +8,7 @@ namespace SpaceInvaders
         public Vector3 Direction { get; private set; }
         public float Speed { get; private set; }
 
-        private LevelConfig _levelConfig;
+        private readonly LevelConfig _levelConfig;
 
         public ProjectileModel(LevelConfig levelConfig)
         {

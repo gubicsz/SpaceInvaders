@@ -1,6 +1,6 @@
 using UniRx;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Models
 {
     public class GameplayModel
     {

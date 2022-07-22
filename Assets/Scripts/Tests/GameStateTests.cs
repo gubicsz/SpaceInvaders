@@ -1,22 +1,25 @@
 using NUnit.Framework;
-using SpaceInvaders;
+using SpaceInvaders.Models;
 using Zenject;
 
-[TestFixture]
-public class GameStateTests : ZenjectUnitTestFixture
+namespace SpaceInvaders.Tests
 {
-    [SetUp]
-    public void CommonInstall()
+    [TestFixture]
+    public class GameStateTests : ZenjectUnitTestFixture
     {
-        Container.Bind<GameStateModel>().AsSingle();
-        Container.Inject(this);
-    }
+        [SetUp]
+        public void CommonInstall()
+        {
+            Container.Bind<GameStateModel>().AsSingle();
+            Container.Inject(this);
+        }
 
-    [Inject] GameStateModel _gameState;
+        [Inject] readonly GameStateModel _gameState;
 
-    [Test]
-    public void GameStateShouldBeLoadingAtStart()
-    {
-        Assert.That(_gameState.State.Value == GameState.Loading);
+        [Test]
+        public void GameStateShouldBeLoadingAtStart()
+        {
+            Assert.That(_gameState.State.Value == GameState.Loading);
+        }
     }
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Helpers
 {
     public class ButtonTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {

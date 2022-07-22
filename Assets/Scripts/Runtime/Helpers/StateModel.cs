@@ -1,7 +1,7 @@
 using System;
 using UniRx;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Helpers
 {
     public abstract class StateModel<T> where T : Enum
     {

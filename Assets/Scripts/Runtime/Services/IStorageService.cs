@@ -1,4 +1,4 @@
-namespace SpaceInvaders
+namespace SpaceInvaders.Services
 {
     /// <summary>
     /// Provides basic save / load functionality.

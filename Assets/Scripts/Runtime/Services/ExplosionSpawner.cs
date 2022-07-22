@@ -1,13 +1,13 @@
+using SpaceInvaders.Presenters;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Services
 {
     public class ExplosionSpawner
     {
-        private ExplosionPresenter.Factory _factory;
-
-        private List<ExplosionPresenter> _explosions = new List<ExplosionPresenter>();
+        readonly ExplosionPresenter.Factory _factory;
+        readonly List<ExplosionPresenter> _explosions = new();
 
         public ExplosionSpawner(ExplosionPresenter.Factory factory)
         {
