@@ -1,19 +1,18 @@
 # SpaceInvaders
-**Instructions:**
-* Open the project in Unity 2021.3.5f1
-* Switch to Android platform
-* Open the loading scene (Assets\Scenes\Loading.unity)
-* Hit play
-* Change gameplay config (Assets\ScriptableObjects\GameConfig.asset) at runtime
 
-**Unity Packages used:**
-* Addressables
-* Test Framework
-* TextMeshPro
+A simple Space Invaders clone made in Unity 2021 LTS using Model-View-Presenter architecture, dependency injection and reactive programming. Asset loading is handled with Addressables. The game uses Zenject factories and memory pools to improve preformance. The user interface was made using Unity UI and TextMeshPro and the animations were done with tweening. The game logic is fully covered with Unit tests using NUnit and NSubstitute.
 
-**3rd party plugins used:**
-* Extenject
-* UniRx
-* UniTask
-* NSubstitute
-* DOTween
+### Unity packages
+
+- Addressables
+- 2D Sprite
+- Unity UI
+- TextMeshPro
+- Test Framework
+
+### 3rd party plugins
+- Zenject / Extenject
+- UniRx
+- UniTask
+- DOTween
+- NSubstitute
