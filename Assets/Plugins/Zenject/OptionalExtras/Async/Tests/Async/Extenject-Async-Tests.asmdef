@@ -1,5 +1,6 @@
 {
-    "name": "Async.Tests",
+    "name": "Extenject-Async-Tests",
+    "rootNamespace": "",
     "references": [
         "Zenject-TestFramework",
         "Zenject",
