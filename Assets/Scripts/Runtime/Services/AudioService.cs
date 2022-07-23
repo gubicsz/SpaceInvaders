@@ -63,7 +63,7 @@ namespace SpaceInvaders.Services
             // Create audio source if for the first time
             if (_music == null)
             {
-                var go = new GameObject("Music");// todo: create only once...
+                var go = new GameObject("Music");
                 _music = go.AddComponent<AudioSource>();
                 _music.spatialBlend = 0;
                 _music.volume = 0;
@@ -103,8 +103,6 @@ namespace SpaceInvaders.Services
                     _music.volume = 0f;
                     _music.Stop();
                 });
-
-            
         }
 
         public void DuckMusic(float targetVolume, float originalVolume, float duration)

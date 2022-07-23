@@ -38,9 +38,9 @@ namespace SpaceInvaders.Services
         public void DespawnAll()
         {
             // Despawn projectiles
-            foreach (var projectile in _projectiles)
+            for (int i = 0; i < _projectiles.Count; i++)
             {
-                projectile.Dispose();
+                _projectiles[i].Dispose();
             }
 
             // Clear list

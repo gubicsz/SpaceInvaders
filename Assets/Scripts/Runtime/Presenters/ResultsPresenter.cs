@@ -31,18 +31,21 @@ namespace SpaceInvaders.Presenters
             _gameplay.CurrentWave.SubscribeToText(_labelWaves, (wave) => (wave - 1).ToString()).AddTo(this);
 
             // Add score to the scoreboard if it's greater than zero
-            _gameState.State.Where(state => state == GameState.Results && _gameplay.CurrentScore.Value > 0).Subscribe(_ =>
-            {
-                // Add new score item
-                _scores.Add(new ScoreItem()
-                {
-                    Score = _gameplay.CurrentScore.Value,
-                    Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm"),
-                });
+            _gameState.State.Where(state => state == GameState.Results && _gameplay.CurrentScore.Value > 0)
+                .Subscribe(_ => AddAndSaveScore()).AddTo(this);
+        }
 
-                // Save scores to the device
-                _scores.Save();
-            }).AddTo(this);
+        private void AddAndSaveScore()
+        {
+            // Add new score item
+            _scores.Add(new ScoreItem()
+            {
+                Score = _gameplay.CurrentScore.Value,
+                Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm"),
+            });
+
+            // Save scores to the device
+            _scores.Save();
         }
     }
 }

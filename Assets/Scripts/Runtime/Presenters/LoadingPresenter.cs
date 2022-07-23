@@ -35,17 +35,11 @@ namespace SpaceInvaders.Presenters
             // Initialize 
             DOTween.Init();
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
-
-            // Load scores
             _scores.Load();
 
-            // Load assets
+            // Load assets and game
             await LoadAssetsAsync();
-
-            // Load game scene
             await SceneManager.LoadSceneAsync(1, LoadSceneMode.Single).ToUniTask();
-
-            // Proceed to the main menu
             _gameState.State.Value = GameState.Menu;
         }
 
