@@ -40,7 +40,9 @@ namespace SpaceInvaders.Models
             originalList.Add(scoreItem);
 
             // Order items and update scoreboard
-            var orderedList = originalList.OrderByDescending(x => x.Score).Take(10);
+            var orderedList = originalList
+                .OrderByDescending(x => x.Score)
+                .Take(10).ToList();
 
             // Update scoreboard
             if (orderedList != null)
@@ -70,7 +72,7 @@ namespace SpaceInvaders.Models
             }
         }
 
-        private void UpdateScoreboard(IEnumerable<ScoreItem> items)
+        private void UpdateScoreboard(IList<ScoreItem> items)
         {
             // Handle error
             if (items == null)
@@ -82,9 +84,9 @@ namespace SpaceInvaders.Models
             Scoreboard.Clear();
 
             // Add items one by one
-            foreach (var item in items)
+            for (int i = 0; i < items.Count; i++)
             {
-                Scoreboard.Add(item);
+                Scoreboard.Add(items[i]);
             }
         }
     }

@@ -51,9 +51,9 @@ namespace SpaceInvaders.Services
         public void Dispose()
         {
             // Release addressable handles
-            foreach (var handle in _handles)
+            for (int i = 0; i < _handles.Count; i++)
             {
-                Addressables.Release(handle);
+                Addressables.Release(_handles[i]);
             }
         }
     }

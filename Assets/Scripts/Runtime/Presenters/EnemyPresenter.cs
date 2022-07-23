@@ -30,19 +30,10 @@ namespace SpaceInvaders.Presenters
             // Handle projectile hit
             if (other.TryGetComponent(out ProjectilePresenter projectile))
             {
-                // Increase score by enemy type
                 _gameplay.CurrentScore.Value += (_enemy.Type + 1) * _enemyConfig.BaseScore;
-
-                // Play explosion sfx
                 _audioService.PlaySfx(Constants.Audio.Explosion, 0.15f);
-
-                // Spawn explosion
                 _explosionSpawner.Spawn(transform.position);
-
-                // Despawn projectile
                 _projectileSpawner.Despawn(projectile);
-
-                // Despawn self
                 _enemySpawner.Despawn(this);
             }
         }
