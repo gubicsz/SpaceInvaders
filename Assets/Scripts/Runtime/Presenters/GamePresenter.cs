@@ -1,7 +1,5 @@
-using Cysharp.Threading.Tasks;
 using SpaceInvaders.Models;
 using SpaceInvaders.Services;
-using System.Linq;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -31,91 +29,129 @@ namespace SpaceInvaders.Presenters
             _background.enabled = true;
 
             // Handle game state transitions
-            _gameState.State.Pairwise().Subscribe(transition => OnStateTransition(transition)).AddTo(this);
+            _gameState.State.Pairwise()
+                .Subscribe(OnStateTransition).AddTo(this);
 
             // Control enemies during gameplay
-            Observable.EveryUpdate().Where(_ => _gameState.State.Value == GameState.Gameplay).Subscribe(_ =>
+            Observable.EveryUpdate().Where(_ => _gameState.State.Value == GameState.Gameplay)
+                .Subscribe(_ => GameplayLoop()).AddTo(this);
+        }
+
+        private void GameplayLoop()
+        {
+            HandleEnemyWaves();
+            HandleEnemyMovement();
+            HandleEnemyShooting();
+            DetectEndGame();
+        }
+
+        private void HandleEnemyWaves()
+        {
+            // Spawn the next wave if all enemies are dead
+            if (_enemySpawner.Enemies.Count == 0)
             {
-                // Spawn the next wave if all enemies are dead
-                if (_enemySpawner.Enemies.Count == 0)
-                {
-                    // Spawn enemies at the starting position
-                    _enemiesManager.Reset();
-                    _enemySpawner.SpawnAll();
+                // Spawn enemies at the starting position
+                _enemiesManager.Reset();
+                _enemySpawner.SpawnAll();
 
-                    // Increase wave counter
-                    _gameplay.CurrentWave.Value++;
+                // Increase wave counter
+                _gameplay.CurrentWave.Value++;
+            }
+        }
+
+        private void HandleEnemyMovement()
+        {
+            // Move global position of the formation
+            var firstEnemy = _enemySpawner.Enemies[0];
+            var lastEnemy = _enemySpawner.Enemies[^1];
+            _enemiesManager.Move(firstEnemy.transform.position, lastEnemy.transform.position,
+                _enemySpawner.Enemies.Count, Time.deltaTime);
+
+            // Update enemy positions
+            for (int i = 0; i < _enemySpawner.Enemies.Count; i++)
+            {
+                EnemyPresenter enemy = _enemySpawner.Enemies[i];
+                enemy.transform.position = _enemiesManager.Position + enemy.Position;
+            }
+        }
+
+        private void HandleEnemyShooting()
+        {
+            if (_enemiesManager.Shoot(Time.time))
+            {
+                // Find random enemy horizontal position
+                int index = Random.Range(0, _enemySpawner.Enemies.Count);
+                float posX = _enemySpawner.Enemies[index].transform.position.x;
+
+                // Find lowest vertical position of the enemies in the specified column
+                Vector3 lowestEnemyPos = Vector3.one * float.MaxValue;
+
+                for (int i = 0; i < _enemySpawner.Enemies.Count; i++)
+                {
+                    Vector3 enemyPos = _enemySpawner.Enemies[i].transform.position;
+
+                    if (Mathf.Approximately(enemyPos.x, posX) && enemyPos.z < lowestEnemyPos.z)
+                    {
+                        lowestEnemyPos = enemyPos;
+                    }
                 }
 
-                // Handle enemy movement
-                var firstEnemy = _enemySpawner.Enemies.First();
-                var lastEnemy = _enemySpawner.Enemies.Last();
-                _enemiesManager.Move(firstEnemy.transform.position, lastEnemy.transform.position, 
-                    _enemySpawner.Enemies.Count, Time.deltaTime);
+                // Spawn projectile
+                Vector3 spawnPos = lowestEnemyPos + Vector3.back * 1.5f;
+                _projectileSpawner.Spawn(spawnPos, Vector3.back, _enemyConfig.ProjectileSpeed);
 
-                foreach (var enemy in _enemySpawner.Enemies)
+                // Play blaster sfx
+                _audioService.PlaySfx(Constants.Audio.Blaster, 0.25f);
+            }
+        }
+
+        private void DetectEndGame()
+        {
+            // Find lowest vertical position of the enemies
+            Vector3 lowestEnemyPos = Vector3.one * float.MaxValue;
+
+            for (int i = 0; i < _enemySpawner.Enemies.Count; i++)
+            {
+                Vector3 enemyPos = _enemySpawner.Enemies[i].transform.position;
+
+                if (enemyPos.z < lowestEnemyPos.z)
                 {
-                    enemy.transform.position = _enemiesManager.Position + enemy.Position;
+                    lowestEnemyPos = enemyPos;
                 }
+            }
 
-                // Handle enemy shooting
-                if (_enemiesManager.Shoot(Time.time))
-                {
-                    // Find random enemy horizontal position
-                    int index = Random.Range(0, _enemySpawner.Enemies.Count);
-                    float posX = _enemySpawner.Enemies[index].transform.position.x;
-
-                    // Find the enemy with the lowest vertical position in that column
-                    var enemyToShoot = _enemySpawner.Enemies
-                        .Where(e => Mathf.Approximately(e.transform.position.x, posX))
-                        .OrderBy(e => e.transform.position.z)
-                        .FirstOrDefault();
-
-                    // Spawn projectile
-                    Vector3 spawnPos = enemyToShoot.transform.position + Vector3.back * 1.5f;
-                    _projectileSpawner.Spawn(spawnPos, Vector3.back, _enemyConfig.ProjectileSpeed);
-
-                    // Play blaster sfx
-                    _audioService.PlaySfx(Constants.Audio.Blaster, 0.25f);
-                }
-
-                // End game when the enemy with the lowest vertical position gets out of bounds
-                var lowestEnemy = _enemySpawner.Enemies.OrderBy(e => e.transform.position.z).FirstOrDefault();
-
-                if (lowestEnemy != null && _levelConfig.IsPosOutOfVerticalBounds(lowestEnemy.transform.position))
-                {
-                    _gameState.State.Value = GameState.Results;
-                }
-            }).AddTo(this);
+            // End game when the enemy with the lowest vertical position gets out of bounds
+            if (_levelConfig.IsPosOutOfVerticalBounds(lowestEnemyPos))
+            {
+                _gameState.State.Value = GameState.Results;
+            }
         }
 
         private void OnStateTransition(Pair<GameState> transition)
         {
             if (transition.Current == GameState.Gameplay)
             {
-                // Spawn player
-                _playerSpawner.Spawn();
-
-                // Reset enemies manager
-                _enemiesManager.Reset();
-
-                // Start music
-                _audioService.PlayMusic(Constants.Audio.Music, _audioConfig.MusicVolume);
+                OnGameplayStarted();
             }
             else if (transition.Previous == GameState.Gameplay)
             {
-                // Despawn player
-                _playerSpawner.Despawn();
-
-                // Despawn enemies
-                _enemySpawner.DespawnAll();
-
-                // Despawn projectiles
-                _projectileSpawner.DespawnAll();
-
-                // Stop music
-                _audioService.StopMusic();
+                OnGameplayEnded();
             }
+        }
+
+        private void OnGameplayStarted()
+        {
+            _playerSpawner.Spawn();
+            _enemiesManager.Reset();
+            _audioService.PlayMusic(Constants.Audio.Music, _audioConfig.MusicVolume);
+        }
+
+        private void OnGameplayEnded()
+        {
+            _playerSpawner.Despawn();
+            _enemySpawner.DespawnAll();
+            _projectileSpawner.DespawnAll();
+            _audioService.StopMusic();
         }
     }
 }
