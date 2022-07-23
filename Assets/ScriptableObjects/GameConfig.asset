@@ -27,6 +27,7 @@ MonoBehaviour:
     FireRate: 1
     SpeedHorizontal: 1
     SpeedVertical: 1
+    SpeedMultiplier: 2
     ProjectileSpeed: 10
     BaseScore: 10
   _level:

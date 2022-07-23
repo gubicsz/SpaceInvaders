@@ -31,7 +31,11 @@ namespace SpaceInvaders.Models
 
         public bool IsPosOutOfHorizontalBounds(Vector3 pos)
         {
-            return (pos.x > Bounds.x) || (pos.x < -Bounds.x);
+            float refAspectRatio = 16f / 9;
+            float currentAspectRatio = (float)Screen.width / (float)Screen.height;
+            float boundX = Bounds.x * (currentAspectRatio / refAspectRatio);
+
+            return (pos.x > boundX) || (pos.x < -boundX);
         }
 
         public bool IsPosOutOfVerticalBounds(Vector3 pos)
