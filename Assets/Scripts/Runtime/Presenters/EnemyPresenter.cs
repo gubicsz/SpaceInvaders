@@ -13,9 +13,9 @@ namespace SpaceInvaders.Presenters
         [Inject] readonly EnemyModel _enemy;
         [Inject] readonly GameplayModel _gameplay;
         [Inject] readonly EnemyConfig _enemyConfig;
-        [Inject] readonly EnemySpawner _enemySpawner;
-        [Inject] readonly ProjectileSpawner _projectileSpawner;
-        [Inject] readonly ExplosionSpawner _explosionSpawner;
+        [Inject] readonly IEnemySpawner _enemySpawner;
+        [Inject] readonly IProjectileSpawner _projectileSpawner;
+        [Inject] readonly IExplosionSpawner _explosionSpawner;
         [Inject] readonly IAudioService _audioService;
 
         IMemoryPool _pool;

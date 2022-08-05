@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SpaceInvaders.Services
 {
-    public class EnemySpawner
+    public class EnemySpawner : IEnemySpawner
     {
         readonly EnemyPresenter.Factory _factory;
         readonly EnemyConfig _enemyConfig;

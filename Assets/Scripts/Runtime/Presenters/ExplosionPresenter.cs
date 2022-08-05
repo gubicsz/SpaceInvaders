@@ -10,7 +10,7 @@ namespace SpaceInvaders.Presenters
     {
         [SerializeField] ParticleSystem _particle;
 
-        [Inject] readonly ExplosionSpawner _particleSpawner;
+        [Inject] readonly IExplosionSpawner _particleSpawner;
 
         IMemoryPool _pool;
 

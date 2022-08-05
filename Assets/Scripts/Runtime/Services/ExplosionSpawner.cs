@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SpaceInvaders.Services
 {
-    public class ExplosionSpawner
+    public class ExplosionSpawner : IExplosionSpawner
     {
         readonly ExplosionPresenter.Factory _factory;
         readonly List<ExplosionPresenter> _explosions = new();

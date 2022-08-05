@@ -11,7 +11,7 @@ namespace SpaceInvaders.Presenters
         [SerializeField] Collider _collider;
 
         [Inject] readonly ProjectileModel _projectile;
-        [Inject] readonly ProjectileSpawner _projectileSpawner;
+        [Inject] readonly IProjectileSpawner _projectileSpawner;
         [Inject] readonly IAudioService _audioService;
 
         IMemoryPool _pool;

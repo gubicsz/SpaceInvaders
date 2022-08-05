@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SpaceInvaders.Services
 {
-    public class CameraShaker
+    public class CameraShaker : ICameraShaker
     {
         Transform _camTransform;
         Vector3 _originalPos;

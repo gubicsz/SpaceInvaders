@@ -13,11 +13,11 @@ namespace SpaceInvaders.Presenters
         [Inject] readonly IEnemiesManager _enemiesManager;
         [Inject] readonly IAudioService _audioService;
         [Inject] readonly IAssetService _assetService;
+        [Inject] readonly IPlayerSpawner _playerSpawner;
+        [Inject] readonly IProjectileSpawner _projectileSpawner;
+        [Inject] readonly IEnemySpawner _enemySpawner;
         [Inject] readonly GameStateModel _gameState;
         [Inject] readonly GameplayModel _gameplay;
-        [Inject] readonly PlayerSpawner _playerSpawner;
-        [Inject] readonly ProjectileSpawner _projectileSpawner;
-        [Inject] readonly EnemySpawner _enemySpawner;
         [Inject] readonly EnemyConfig _enemyConfig;
         [Inject] readonly LevelConfig _levelConfig;
         [Inject] readonly AudioConfig _audioConfig;

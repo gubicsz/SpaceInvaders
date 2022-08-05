@@ -21,9 +21,9 @@ namespace SpaceInvaders.Presenters
         [Inject] readonly PlayerConfig _playerConfig;
         [Inject] readonly AudioConfig _audioConfig;
         [Inject] readonly InputModel _input;
-        [Inject] readonly ProjectileSpawner _projectileSpawner;
         [Inject] readonly GameStateModel _gameState;
-        [Inject] readonly CameraShaker _cameraShaker;
+        [Inject] readonly IProjectileSpawner _projectileSpawner;
+        [Inject] readonly ICameraShaker _cameraShaker;
         [Inject] readonly IAudioService _audioService;
 
         private void Start()

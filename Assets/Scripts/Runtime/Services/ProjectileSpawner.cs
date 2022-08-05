@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SpaceInvaders.Services
 {
-    public class ProjectileSpawner
+    public class ProjectileSpawner : IProjectileSpawner
     {
         readonly ProjectilePresenter.Factory _factory;
 

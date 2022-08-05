@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SpaceInvaders.Services
 {
-    public class PlayerSpawner
+    public class PlayerSpawner : IPlayerSpawner
     {
         readonly PlayerPresenter.Factory _factory;
         readonly IAssetService _assetService;
