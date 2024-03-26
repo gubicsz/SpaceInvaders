@@ -1,7 +1,7 @@
-using SpaceInvaders.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpaceInvaders.Services;
 using UniRx;
 
 namespace SpaceInvaders.Models
@@ -21,17 +21,17 @@ namespace SpaceInvaders.Models
 
     public class ScoresModel
     {
-        public ReactiveCollection<ScoreItem> Scoreboard { get; private set; }
+        private const string _storageKey = "Scoreboard";
 
         private readonly IStorageService _storageService;
-
-        private const string _storageKey = "Scoreboard";
 
         public ScoresModel(IStorageService storageService)
         {
             _storageService = storageService;
             Scoreboard = new ReactiveCollection<ScoreItem>();
         }
+
+        public ReactiveCollection<ScoreItem> Scoreboard { get; }
 
         public void Add(ScoreItem scoreItem)
         {
@@ -40,24 +40,17 @@ namespace SpaceInvaders.Models
             originalList.Add(scoreItem);
 
             // Order items and update scoreboard
-            var orderedList = originalList
-                .OrderByDescending(x => x.Score)
-                .Take(10).ToList();
+            var orderedList = originalList.OrderByDescending(x => x.Score).Take(10).ToList();
 
             // Update scoreboard
             if (orderedList != null)
-            {
                 UpdateScoreboard(orderedList);
-            }
         }
 
         public void Save()
         {
             // Save scoreboard to the device
-            _storageService.Save(_storageKey, new Scoreboard()
-            {
-                Items = Scoreboard.ToArray()
-            });
+            _storageService.Save(_storageKey, new Scoreboard { Items = Scoreboard.ToArray() });
         }
 
         public void Load()
@@ -67,27 +60,21 @@ namespace SpaceInvaders.Models
 
             // Update scoreboard
             if (scoreboard != null)
-            {
                 UpdateScoreboard(scoreboard.Items);
-            }
         }
 
         private void UpdateScoreboard(IList<ScoreItem> items)
         {
             // Handle error
             if (items == null)
-            {
                 return;
-            }
 
             // Clear reactive list
             Scoreboard.Clear();
 
             // Add items one by one
-            for (int i = 0; i < items.Count; i++)
-            {
+            for (var i = 0; i < items.Count; i++)
                 Scoreboard.Add(items[i]);
-            }
         }
     }
 }

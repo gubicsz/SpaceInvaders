@@ -14,7 +14,8 @@ namespace SpaceInvaders.Tests
             Container.Inject(this);
         }
 
-        [Inject] readonly GameplayModel _gameplay;
+        [Inject]
+        private readonly GameplayModel _gameplay;
 
         [Test]
         public void GameplayShouldStartWithInitialValues()

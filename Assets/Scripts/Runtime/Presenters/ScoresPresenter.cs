@@ -10,36 +10,49 @@ namespace SpaceInvaders.Presenters
 {
     public class ScoresPresenter : MonoBehaviour
     {
-        [SerializeField] Button _buttonBack;
-        [SerializeField] TextMeshProUGUI _itemPrefab;
-        [SerializeField] VerticalLayoutGroup _itemHolder;
+        [SerializeField]
+        private Button _buttonBack;
 
-        [Inject] readonly GameStateModel _gameState;
-        [Inject] readonly ScoresModel _scores;
+        [SerializeField]
+        private TextMeshProUGUI _itemPrefab;
+
+        [SerializeField]
+        private VerticalLayoutGroup _itemHolder;
+
+        [Inject]
+        private readonly GameStateModel _gameState;
+
+        [Inject]
+        private readonly ScoresModel _scores;
 
         private BoundItemsContainer<ScoreItem> _scoresContainer;
 
         private void Start()
         {
             // Return to main menu
-            _buttonBack.OnClickAsObservable()
+            _buttonBack
+                .OnClickAsObservable()
                 .Subscribe(_ => _gameState.State.Value = GameState.Menu)
                 .AddTo(this);
 
             // Create score items container
-            _scoresContainer = new BoundItemsContainer<ScoreItem>(_itemPrefab.gameObject, _itemHolder.gameObject)
+            _scoresContainer = new BoundItemsContainer<ScoreItem>(
+                _itemPrefab.gameObject,
+                _itemHolder.gameObject
+            )
             {
                 DestroyOnRemove = true
             };
 
             // Handle add event
-            _scoresContainer.ObserveAdd().Subscribe(e =>
-            {
-                if (e.GameObject.TryGetComponent(out TextMeshProUGUI item))
+            _scoresContainer
+                .ObserveAdd()
+                .Subscribe(e =>
                 {
-                    item.text = $"<color=#00ffff>{e.Model.Score}</color> - {e.Model.Date}";
-                }
-            }).AddTo(this);
+                    if (e.GameObject.TryGetComponent(out TextMeshProUGUI item))
+                        item.text = $"<color=#00ffff>{e.Model.Score}</color> - {e.Model.Date}";
+                })
+                .AddTo(this);
 
             // Initialize container
             _scoresContainer.Initialize(_scores.Scoreboard);

@@ -1,6 +1,6 @@
+using System;
 using Cysharp.Threading.Tasks;
 using SpaceInvaders.Services;
-using System;
 using UnityEngine;
 using Zenject;
 
@@ -8,11 +8,16 @@ namespace SpaceInvaders.Presenters
 {
     public class ExplosionPresenter : MonoBehaviour, IPoolable<Vector3, IMemoryPool>, IDisposable
     {
-        [SerializeField] ParticleSystem _particle;
+        [SerializeField] private ParticleSystem _particle;
 
-        [Inject] readonly IExplosionSpawner _particleSpawner;
+        [Inject] private readonly IExplosionSpawner _particleSpawner;
 
-        IMemoryPool _pool;
+        private IMemoryPool _pool;
+
+        public void Dispose()
+        {
+            _pool.Despawn(this);
+        }
 
         public async void OnSpawned(Vector3 position, IMemoryPool pool)
         {
@@ -32,11 +37,6 @@ namespace SpaceInvaders.Presenters
             _pool = null;
             _particle.Stop();
             transform.position = Vector3.zero;
-        }
-
-        public void Dispose()
-        {
-            _pool.Despawn(this);
         }
 
         public class Factory : PlaceholderFactory<Vector3, ExplosionPresenter>

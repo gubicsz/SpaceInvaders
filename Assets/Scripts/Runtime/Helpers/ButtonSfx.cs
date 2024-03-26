@@ -10,13 +10,16 @@ namespace SpaceInvaders.Helpers
     [RequireComponent(typeof(Button))]
     public class ButtonSfx : MonoBehaviour
     {
-        [Inject] readonly IAudioService _audioService;
+        [Inject]
+        private readonly IAudioService _audioService;
 
         private void Start()
         {
             // Play sfx on click
-            GetComponent<Button>().OnClickAsObservable().Subscribe(_ => 
-                _audioService.PlaySfx(Constants.Audio.Click, 1.0f)).AddTo(this);
+            GetComponent<Button>()
+                .OnClickAsObservable()
+                .Subscribe(_ => _audioService.PlaySfx(Constants.Audio.Click, 1.0f))
+                .AddTo(this);
         }
     }
 }

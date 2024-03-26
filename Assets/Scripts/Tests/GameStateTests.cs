@@ -14,7 +14,8 @@ namespace SpaceInvaders.Tests
             Container.Inject(this);
         }
 
-        [Inject] readonly GameStateModel _gameState;
+        [Inject]
+        private readonly GameStateModel _gameState;
 
         [Test]
         public void GameStateShouldBeLoadingAtStart()

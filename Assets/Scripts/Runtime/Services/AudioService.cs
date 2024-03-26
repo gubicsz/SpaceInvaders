@@ -1,6 +1,6 @@
 using System;
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
 
 namespace SpaceInvaders.Services
 {
@@ -13,11 +13,11 @@ namespace SpaceInvaders.Services
 
     public class AudioService : IAudioService
     {
-        readonly IAssetService _assetService;
+        private readonly IAssetService _assetService;
 
-        Transform _camTransform;
-        AudioSource _music;
-        Tween _tween;
+        private Transform _camTransform;
+        private AudioSource _music;
+        private Tween _tween;
 
         public AudioService(IAssetService assetService)
         {
@@ -27,7 +27,7 @@ namespace SpaceInvaders.Services
         public void PlaySfx(string key, float volume)
         {
             // Get clip from asset service based on key
-            AudioClip clip = _assetService.Get<AudioClip>(key);
+            var clip = _assetService.Get<AudioClip>(key);
 
             // Handle error
             if (clip == null)
@@ -38,9 +38,7 @@ namespace SpaceInvaders.Services
 
             // Cache camera transform
             if (_camTransform == null)
-            {
                 _camTransform = Camera.main.transform;
-            }
 
             // This is just a quick and dirty solution. It is very bad for performance
             // because this call creates and destroys an AudioSource each time.
@@ -51,7 +49,7 @@ namespace SpaceInvaders.Services
         public void PlayMusic(string key, float volume)
         {
             // Get clip from asset service based on key
-            AudioClip clip = _assetService.Get<AudioClip>(key);
+            var clip = _assetService.Get<AudioClip>(key);
 
             // Handle error
             if (clip == null)
@@ -72,7 +70,8 @@ namespace SpaceInvaders.Services
 
             // Fade int music
             _tween?.Kill();
-            _tween = _music.DOFade(volume, 2f)
+            _tween = _music
+                .DOFade(volume, 2f)
                 .SetEase(Ease.InQuad)
                 .OnStart(() =>
                 {
@@ -90,13 +89,12 @@ namespace SpaceInvaders.Services
         {
             // Handle error
             if (_music == null)
-            {
                 return;
-            }
 
             // Fade out music
             _tween?.Kill();
-            _tween = _music.DOFade(0f, 2f)
+            _tween = _music
+                .DOFade(0f, 2f)
                 .SetEase(Ease.OutQuad)
                 .OnComplete(() =>
                 {
@@ -109,13 +107,12 @@ namespace SpaceInvaders.Services
         {
             // Handle error
             if (_music == null)
-            {
                 return;
-            }
 
             // Duck music
             _tween?.Kill();
-            _tween = _music.DOFade(targetVolume, duration)
+            _tween = _music
+                .DOFade(targetVolume, duration)
                 .SetEase(Ease.OutQuad)
                 .SetLoops(2, LoopType.Yoyo)
                 .OnComplete(() =>

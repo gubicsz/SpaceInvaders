@@ -8,14 +8,20 @@ namespace SpaceInvaders.Presenters
 {
     public class InputPresenter : MonoBehaviour
     {
-        [SerializeField] ButtonAxis ButtonHorizontal;
-        [SerializeField] ButtonTouch ButtonFire;
-
-        [Inject] readonly InputModel _input;
-        [Inject] readonly GameStateModel _gameState;
-
         private const string _axisHorizontal = "Horizontal";
         private const string _buttonFire = "Jump";
+
+        [SerializeField]
+        private ButtonAxis ButtonHorizontal;
+
+        [SerializeField]
+        private ButtonTouch ButtonFire;
+
+        [Inject]
+        private readonly GameStateModel _gameState;
+
+        [Inject]
+        private readonly InputModel _input;
 
         private void Start()
         {
@@ -26,16 +32,20 @@ namespace SpaceInvaders.Presenters
 #endif
 
             // Update input model based on platform
-            Observable.EveryUpdate().Where(_ => _gameState.State.Value == GameState.Gameplay).Subscribe(_ =>
-            {
+            Observable
+                .EveryUpdate()
+                .Where(_ => _gameState.State.Value == GameState.Gameplay)
+                .Subscribe(_ =>
+                {
 #if UNITY_EDITOR
-                _input.Horizontal = Input.GetAxisRaw(_axisHorizontal);
-                _input.Fire = Input.GetButton(_buttonFire);
+                    _input.Horizontal = Input.GetAxisRaw(_axisHorizontal);
+                    _input.Fire = Input.GetButton(_buttonFire);
 #else
-                _input.Horizontal = ButtonHorizontal.Axis;
-                _input.Fire = ButtonFire.IsPressed;
+                    _input.Horizontal = ButtonHorizontal.Axis;
+                    _input.Fire = ButtonFire.IsPressed;
 #endif
-            }).AddTo(this);
+                })
+                .AddTo(this);
         }
     }
 }

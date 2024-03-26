@@ -1,8 +1,8 @@
+using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using SpaceInvaders.Models;
 using SpaceInvaders.Services;
-using System;
 using TMPro;
 using UniRx;
 using UnityEngine;
@@ -13,26 +13,36 @@ namespace SpaceInvaders.Presenters
 {
     public class LoadingPresenter : MonoBehaviour
     {
-        [SerializeField] TextMeshProUGUI _labelLoading;
+        [SerializeField]
+        private TextMeshProUGUI _labelLoading;
 
-        [Inject] readonly IAssetService _assetService;
-        [Inject] readonly GameStateModel _gameState;
-        [Inject] readonly ScoresModel _scores;
+        [Inject]
+        private readonly IAssetService _assetService;
 
-        readonly string[] _loadingTexts = new string[4]
+        [Inject]
+        private readonly GameStateModel _gameState;
+
+        private readonly string[] _loadingTexts = new string[4]
         {
-            "Loading", "Loading.", "Loading..", "Loading..."
+            "Loading",
+            "Loading.",
+            "Loading..",
+            "Loading..."
         };
+
+        [Inject]
+        private readonly ScoresModel _scores;
 
         private async void Start()
         {
             // Animate loading text
-            Observable.Timer(TimeSpan.FromSeconds(0.25f), TimeSpan.FromSeconds(0.25))
+            Observable
+                .Timer(TimeSpan.FromSeconds(0.25f), TimeSpan.FromSeconds(0.25))
                 .Where(_ => gameObject.activeSelf)
                 .Subscribe(tick => _labelLoading.text = _loadingTexts[tick % _loadingTexts.Length])
                 .AddTo(this);
 
-            // Initialize 
+            // Initialize
             DOTween.Init();
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
             _scores.Load();

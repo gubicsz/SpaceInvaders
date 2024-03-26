@@ -4,16 +4,16 @@ namespace SpaceInvaders.Models
 {
     public class ProjectileModel
     {
-        public Vector3 Position { get; private set; }
-        public Vector3 Direction { get; private set; }
-        public float Speed { get; private set; }
-
         private readonly LevelConfig _levelConfig;
 
         public ProjectileModel(LevelConfig levelConfig)
         {
             _levelConfig = levelConfig;
         }
+
+        public Vector3 Position { get; private set; }
+        public Vector3 Direction { get; private set; }
+        public float Speed { get; private set; }
 
         public void Init(Vector3 position, Vector3 direction, float speed)
         {

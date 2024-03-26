@@ -16,8 +16,11 @@ namespace SpaceInvaders.Tests
             Container.Inject(this);
         }
 
-        [Inject] readonly ProjectileModel _projectile;
-        [Inject] readonly LevelConfig _level;
+        [Inject]
+        private readonly ProjectileModel _projectile;
+
+        [Inject]
+        private readonly LevelConfig _level;
 
         [Test]
         public void ProjectileShouldStartWithInitialValues()
@@ -30,9 +33,9 @@ namespace SpaceInvaders.Tests
         [Test]
         public void InitShouldSetProperties()
         {
-            Vector3 position = Vector3.one;
-            Vector3 direction = Vector3.forward;
-            float speed = 10f;
+            var position = Vector3.one;
+            var direction = Vector3.forward;
+            var speed = 10f;
 
             _projectile.Init(position, direction, speed);
 
@@ -57,7 +60,7 @@ namespace SpaceInvaders.Tests
         {
             _projectile.Init(Vector3.zero, Vector3.forward, 1f);
 
-            bool isOutOfBounds = _projectile.Move(1f);
+            var isOutOfBounds = _projectile.Move(1f);
 
             Assert.That(_projectile.Position == Vector3.forward);
             Assert.That(!isOutOfBounds);
@@ -68,7 +71,7 @@ namespace SpaceInvaders.Tests
         {
             _projectile.Init(_level.Bounds, Vector3.forward, 1f);
 
-            bool isOutOfBounds = _projectile.Move(1f);
+            var isOutOfBounds = _projectile.Move(1f);
 
             Assert.That(isOutOfBounds);
         }

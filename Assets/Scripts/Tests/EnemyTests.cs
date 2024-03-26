@@ -16,15 +16,18 @@ namespace SpaceInvaders.Tests
             Container.Inject(this);
         }
 
-        [Inject] readonly EnemyModel _enemy;
-        [Inject] readonly EnemyConfig _enemyConfig;
+        [Inject]
+        private readonly EnemyModel _enemy;
+
+        [Inject]
+        private readonly EnemyConfig _enemyConfig;
 
         [Test]
         public void InitShouldSetProperties()
         {
-            int type = 0;
-            int row = 0;
-            int col = 0;
+            var type = 0;
+            var row = 0;
+            var col = 0;
 
             _enemy.Init(type, row, col);
 
@@ -37,12 +40,10 @@ namespace SpaceInvaders.Tests
         [Test]
         public void InitShouldSetCorrectPosition()
         {
-            Vector3 centerPos = -_enemy.CalculateGridPosition((_enemyConfig.Columns - 1) / 2, 0);
+            var centerPos = -_enemy.CalculateGridPosition((_enemyConfig.Columns - 1) / 2, 0);
 
             if (_enemyConfig.Columns % 2 == 0)
-            {
                 centerPos -= _enemyConfig.GridWidth / 2f * Vector3.right;
-            }
 
             _enemy.Init(0, 0, 0);
 
@@ -65,13 +66,13 @@ namespace SpaceInvaders.Tests
         [Test]
         public void VerifyCalculateGridPosition()
         {
-            int col = 1;
-            int row = 1;
-            Vector3 gridPosition =
-                (_enemyConfig.GridWidth * col * Vector3.right) +
-                (_enemyConfig.GridHeight * row * Vector3.forward);
+            var col = 1;
+            var row = 1;
+            var gridPosition =
+                _enemyConfig.GridWidth * col * Vector3.right
+                + _enemyConfig.GridHeight * row * Vector3.forward;
 
-            Vector3 calculatedPosition = _enemy.CalculateGridPosition(col, row);
+            var calculatedPosition = _enemy.CalculateGridPosition(col, row);
 
             Assert.That(calculatedPosition == gridPosition);
         }

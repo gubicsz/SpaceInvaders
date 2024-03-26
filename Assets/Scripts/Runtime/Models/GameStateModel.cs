@@ -8,14 +8,12 @@ namespace SpaceInvaders.Models
         Menu,
         Gameplay,
         Results,
-        Scores,
+        Scores
     }
 
     public class GameStateModel : StateModel<GameState>
     {
-        public GameStateModel() : base(GameState.Loading)
-        {
-
-        }
+        public GameStateModel()
+            : base(GameState.Loading) { }
     }
 }

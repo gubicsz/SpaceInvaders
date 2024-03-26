@@ -5,8 +5,8 @@ namespace SpaceInvaders.Services
 {
     public class CameraShaker : ICameraShaker
     {
-        Transform _camTransform;
-        Vector3 _originalPos;
+        private readonly Transform _camTransform;
+        private readonly Vector3 _originalPos;
 
         public CameraShaker()
         {
@@ -18,12 +18,11 @@ namespace SpaceInvaders.Services
         public void Shake(float duration, float strength)
         {
             if (_camTransform == null)
-            {
                 return;
-            }
 
             // Shake camera
-            _camTransform.DOShakePosition(duration, strength, 75)
+            _camTransform
+                .DOShakePosition(duration, strength, 75)
                 .OnComplete(() => _camTransform.position = _originalPos);
         }
     }

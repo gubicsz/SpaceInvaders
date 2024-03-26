@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UniRx;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace SpaceInvaders.Helpers
 {
     /// <summary>
-    /// Automatically creates and destroys Views (GameObjects) as models are added to the underlying ReactiveCollection.
+    ///     Automatically creates and destroys Views (GameObjects) as models are added to the underlying ReactiveCollection.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class BoundItemsContainer<T> : IDisposable
@@ -15,38 +16,28 @@ namespace SpaceInvaders.Helpers
         private readonly CompositeDisposable _disposableList = new();
 
         /// <summary>
-        /// A dictionary indexed by the models, containing the instantiated GameObject for every model
+        ///     A dictionary indexed by the models, containing the instantiated GameObject for every model
         /// </summary>
         public readonly Dictionary<T, GameObject> InstantiatedGameObjects = new();
 
         /// <summary>
-        /// The prefab to be instantiated for the models
-        /// </summary>
-        public readonly GameObject ItemPrefab;
-
-        /// <summary>
-        /// The parent GameObject to add the instantiated GameObjects to
+        ///     The parent GameObject to add the instantiated GameObjects to
         /// </summary>
         public readonly GameObject ItemHolder;
 
-        private Subject<BoundItemsContainerEvent<T>> _add = null;
+        /// <summary>
+        ///     The prefab to be instantiated for the models
+        /// </summary>
+        public readonly GameObject ItemPrefab;
 
-        private Subject<BoundItemsContainerEvent<T>> _remove = null;
+        private Subject<BoundItemsContainerEvent<T>> _add;
+
+        private Subject<BoundItemsContainerEvent<T>> _remove;
 
         /// <summary>
-        /// Returns true if the collection has been initialized
+        ///     Creates a new BoundItemsContainer object and binds it to the specified collection
         /// </summary>
-        public bool IsCollectionInitialized { get; private set; }
-
-        /// <summary>
-        /// If true, the GameObjects belonging to the models are destroyed when the model is removed from the bound collection
-        /// </summary>
-        public bool DestroyOnRemove { get; set; } = true;
-
-        /// <summary>
-        /// Creates a new BoundItemsContainer object and binds it to the specified collection
-        /// </summary>
-        /// <param name="collectionToBindTo">The <see cref="UniRx.ReactiveCollection{T}"/> collection to bind to</param>
+        /// <param name="collectionToBindTo">The <see cref="UniRx.ReactiveCollection{T}" /> collection to bind to</param>
         /// <param name="itemPrefab">The prefabs to create when a model is added to the collection</param>
         /// <param name="itemHolder">The parent of the prefab to create</param>
         public BoundItemsContainer(GameObject itemPrefab, GameObject itemHolder)
@@ -56,24 +47,37 @@ namespace SpaceInvaders.Helpers
         }
 
         /// <summary>
-        /// Initializes with a collection to bind to. Can only be called once.
+        ///     Returns true if the collection has been initialized
+        /// </summary>
+        public bool IsCollectionInitialized { get; private set; }
+
+        /// <summary>
+        ///     If true, the GameObjects belonging to the models are destroyed when the model is removed from the bound collection
+        /// </summary>
+        public bool DestroyOnRemove { get; set; } = true;
+
+        public void Dispose()
+        {
+            _disposableList.Clear();
+        }
+
+        /// <summary>
+        ///     Initializes with a collection to bind to. Can only be called once.
         /// </summary>
         public void Initialize(ReactiveCollection<T> collectionToBindTo)
         {
             if (IsCollectionInitialized)
-            {
-                throw new InvalidOperationException($"'{nameof(Initialize)}' can only be called once.");
-            }
+                throw new InvalidOperationException(
+                    $"'{nameof(Initialize)}' can only be called once."
+                );
 
             var collection = collectionToBindTo;
             collection.ObserveAdd().Subscribe(evt => AddHandler(evt.Value)).AddTo(_disposableList);
             collection.ObserveRemove().Subscribe(RemoveHandler).AddTo(_disposableList);
             collection.ObserveReset().Subscribe(ResetHandler).AddTo(_disposableList);
 
-            foreach (T existingItem in collection)
-            {
+            foreach (var existingItem in collection)
                 AddHandler(existingItem);
-            }
 
             IsCollectionInitialized = true;
         }
@@ -82,10 +86,8 @@ namespace SpaceInvaders.Helpers
         {
             var modelList = InstantiatedGameObjects.Keys.ToList();
 
-            for (int i = 0; i < modelList.Count; i++)
-            {
+            for (var i = 0; i < modelList.Count; i++)
                 RemoveItem(modelList[i]);
-            }
         }
 
         private void RemoveHandler(CollectionRemoveEvent<T> collectionRemoveEvent)
@@ -100,7 +102,7 @@ namespace SpaceInvaders.Helpers
 
             if (DestroyOnRemove)
             {
-                GameObject.Destroy(gameObjectToRemove);
+                Object.Destroy(gameObjectToRemove);
                 InstantiatedGameObjects.Remove(modelToRemove);
             }
 
@@ -111,14 +113,14 @@ namespace SpaceInvaders.Helpers
         private void AddHandler(T addedModel)
         {
             // Create ItemPrefab instance, add it to ItemHolder
-            var newGameObject = GameObject.Instantiate(ItemPrefab, ItemHolder.transform);
+            var newGameObject = Object.Instantiate(ItemPrefab, ItemHolder.transform);
             InstantiatedGameObjects.Add(addedModel, newGameObject);
 
             _add?.OnNext(new BoundItemsContainerEvent<T>(newGameObject, addedModel));
         }
 
         /// <summary>
-        /// Subscribe to this to get notified when an item is added.
+        ///     Subscribe to this to get notified when an item is added.
         /// </summary>
         public IObservable<BoundItemsContainerEvent<T>> ObserveAdd()
         {
@@ -126,36 +128,32 @@ namespace SpaceInvaders.Helpers
         }
 
         /// <summary>
-        /// Subscribe to this to get notified when an item is removed.
+        ///     Subscribe to this to get notified when an item is removed.
         /// </summary>
         public IObservable<BoundItemsContainerEvent<T>> ObserveRemove()
         {
             return _remove ?? (_remove = new Subject<BoundItemsContainerEvent<T>>());
         }
-
-        public void Dispose()
-        {
-            _disposableList.Clear();
-        }
     }
 
     /// <summary>
-    /// The event data for the <see cref="BoundItemsContainer{T}.ObserveAdd"/> and <see cref="BoundItemsContainer{T}.ObserveRemove"/> observables.
+    ///     The event data for the <see cref="BoundItemsContainer{T}.ObserveAdd" /> and
+    ///     <see cref="BoundItemsContainer{T}.ObserveRemove" /> observables.
     /// </summary>
     public struct BoundItemsContainerEvent<T>
     {
         /// <summary>
-        /// The GameObject affected
+        ///     The GameObject affected
         /// </summary>
         public GameObject GameObject { get; private set; }
 
         /// <summary>
-        /// The Model affected
+        ///     The Model affected
         /// </summary>
         public T Model { get; private set; }
 
         /// <summary>
-        /// Creates a new instance of the class
+        ///     Creates a new instance of the class
         /// </summary>
         /// <param name="gameObject"></param>
         /// <param name="model"></param>

@@ -1,6 +1,6 @@
+using System;
 using SpaceInvaders.Models;
 using SpaceInvaders.Services;
-using System;
 using UnityEngine;
 using Zenject;
 
@@ -8,20 +8,20 @@ namespace SpaceInvaders.Presenters
 {
     public class EnemyPresenter : MonoBehaviour, IPoolable<int, int, int, IMemoryPool>, IDisposable
     {
-        [SerializeField] GameObject[] _models;
+        [SerializeField] private GameObject[] _models;
+        [Inject] private readonly IAudioService _audioService;
 
-        [Inject] readonly EnemyModel _enemy;
-        [Inject] readonly GameplayModel _gameplay;
-        [Inject] readonly EnemyConfig _enemyConfig;
-        [Inject] readonly IEnemySpawner _enemySpawner;
-        [Inject] readonly IProjectileSpawner _projectileSpawner;
-        [Inject] readonly IExplosionSpawner _explosionSpawner;
-        [Inject] readonly IAudioService _audioService;
+        [Inject] private readonly EnemyModel _enemy;
+        [Inject] private readonly EnemyConfig _enemyConfig;
+        [Inject] private readonly IEnemySpawner _enemySpawner;
+        [Inject] private readonly IExplosionSpawner _explosionSpawner;
+        [Inject] private readonly GameplayModel _gameplay;
+        [Inject] private readonly IProjectileSpawner _projectileSpawner;
 
-        IMemoryPool _pool;
+        private IMemoryPool _pool;
 
         /// <summary>
-        /// The local position of the enemy in the formation.
+        ///     The local position of the enemy in the formation.
         /// </summary>
         public Vector3 Position => _enemy.Position;
 
@@ -36,6 +36,11 @@ namespace SpaceInvaders.Presenters
                 _projectileSpawner.Despawn(projectile);
                 _enemySpawner.Despawn(this);
             }
+        }
+
+        public void Dispose()
+        {
+            _pool.Despawn(this);
         }
 
         public void OnSpawned(int type, int row, int col, IMemoryPool pool)
@@ -56,11 +61,6 @@ namespace SpaceInvaders.Presenters
             // Reset model
             _pool = null;
             _enemy.Reset();
-        }
-
-        public void Dispose()
-        {
-            _pool.Despawn(this);
         }
 
         public class Factory : PlaceholderFactory<int, int, int, EnemyPresenter>

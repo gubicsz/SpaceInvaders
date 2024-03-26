@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using NUnit.Framework;
 using SpaceInvaders.Models;
@@ -18,9 +19,14 @@ namespace SpaceInvaders.Tests
             Container.Inject(this);
         }
 
-        [Inject] readonly PlayerModel _player;
-        [Inject] readonly PlayerConfig _config;
-        [Inject] readonly LevelConfig _level;
+        [Inject]
+        private readonly PlayerModel _player;
+
+        [Inject]
+        private readonly PlayerConfig _config;
+
+        [Inject]
+        private readonly LevelConfig _level;
 
         [Test]
         public void PlayerShouldStartAtSpawnPosition()
@@ -44,7 +50,7 @@ namespace SpaceInvaders.Tests
         [Test]
         public async void PlayerShouldBeDamagableAtStart()
         {
-            bool isDamaged = await _player.DamageAsync();
+            var isDamaged = await _player.DamageAsync();
 
             Assert.That(isDamaged);
         }
@@ -54,7 +60,7 @@ namespace SpaceInvaders.Tests
         {
             _player.Lives.Value = 0;
 
-            bool isDamaged = await _player.DamageAsync();
+            var isDamaged = await _player.DamageAsync();
 
             Assert.That(!isDamaged);
         }
@@ -64,7 +70,7 @@ namespace SpaceInvaders.Tests
         {
             _player.IsInvulnerable.Value = true;
 
-            bool isDamaged = await _player.DamageAsync();
+            var isDamaged = await _player.DamageAsync();
 
             Assert.That(!isDamaged);
         }
@@ -72,10 +78,10 @@ namespace SpaceInvaders.Tests
         [Test]
         public void PlayerShouldLoseALifeWhenHit()
         {
-            int lives = _player.Lives.Value;
+            var lives = _player.Lives.Value;
             _player.DamageAsync().Forget();
 
-            Assert.That(_player.Lives.Value == (lives - 1));
+            Assert.That(_player.Lives.Value == lives - 1);
         }
 
         [Test]
@@ -102,7 +108,7 @@ namespace SpaceInvaders.Tests
 
             Assert.That(_player.IsInvulnerable.Value);
 
-            await UniTask.Delay(System.TimeSpan.FromSeconds(_config.Invulnerability));
+            await UniTask.Delay(TimeSpan.FromSeconds(_config.Invulnerability));
             await UniTask.Delay(100);
 
             Assert.That(!_player.IsInvulnerable.Value);
@@ -126,9 +132,9 @@ namespace SpaceInvaders.Tests
         [Test]
         public void PlayerShouldMoveByTheExactAmount()
         {
-            float h = 1f;
-            float dt = 1f / 60f;
-            float x = h * dt * _config.Speed;
+            var h = 1f;
+            var dt = 1f / 60f;
+            var x = h * dt * _config.Speed;
 
             _player.Move(h, dt);
 
@@ -138,10 +144,13 @@ namespace SpaceInvaders.Tests
         [Test]
         public void PlayerShouldNotMoveOutOfBounds()
         {
-            float h = 1f;
-            float dt = 1f / 60f;
-            _player.Position.Value = new Vector3(_level.Bounds.x,
-                _player.Position.Value.y, _player.Position.Value.z);
+            var h = 1f;
+            var dt = 1f / 60f;
+            _player.Position.Value = new Vector3(
+                _level.Bounds.x,
+                _player.Position.Value.y,
+                _player.Position.Value.z
+            );
 
             _player.Move(h, dt);
 
@@ -151,9 +160,9 @@ namespace SpaceInvaders.Tests
         [Test]
         public void PlayerShouldBeAbleToShootAtStart()
         {
-            float currentTime = 0f;
+            var currentTime = 0f;
 
-            bool shot = _player.Shoot(currentTime);
+            var shot = _player.Shoot(currentTime);
 
             Assert.That(shot);
             Assert.That(_player.ShotTime == currentTime);
@@ -162,8 +171,8 @@ namespace SpaceInvaders.Tests
         [Test]
         public void PlayerShouldNotBeAbleToShootTwiceAtTheSameTime()
         {
-            bool shot1 = _player.Shoot(0f);
-            bool shot2 = _player.Shoot(0f);
+            var shot1 = _player.Shoot(0f);
+            var shot2 = _player.Shoot(0f);
 
             Assert.That(shot1);
             Assert.That(!shot2);
@@ -172,8 +181,8 @@ namespace SpaceInvaders.Tests
         [Test]
         public void PlayerShouldBeAbleToShootBasedOnFireRate()
         {
-            bool shot1 = _player.Shoot(0f);
-            bool shot2 = _player.Shoot(_config.FireRate);
+            var shot1 = _player.Shoot(0f);
+            var shot2 = _player.Shoot(_config.FireRate);
 
             Assert.That(shot1);
             Assert.That(shot2);

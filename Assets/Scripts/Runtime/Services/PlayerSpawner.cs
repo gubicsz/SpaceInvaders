@@ -6,10 +6,10 @@ namespace SpaceInvaders.Services
 {
     public class PlayerSpawner : IPlayerSpawner
     {
-        readonly PlayerPresenter.Factory _factory;
-        readonly IAssetService _assetService;
+        private readonly IAssetService _assetService;
+        private readonly PlayerPresenter.Factory _factory;
 
-        PlayerPresenter _player;
+        private PlayerPresenter _player;
 
         public PlayerSpawner(PlayerPresenter.Factory factory, IAssetService assetService)
         {
@@ -24,9 +24,7 @@ namespace SpaceInvaders.Services
 
             // Handle error
             if (prefab == null)
-            {
                 return;
-            }
 
             // Spawn player
             _player = _factory.Create(prefab);
@@ -36,9 +34,7 @@ namespace SpaceInvaders.Services
         {
             // The player hasn't been spawned yet
             if (_player == null)
-            {
                 return;
-            }
 
             // Despawn player
             Object.Destroy(_player.gameObject);

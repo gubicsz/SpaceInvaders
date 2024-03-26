@@ -1,15 +1,13 @@
+using System.Collections.Generic;
 using SpaceInvaders.Models;
 using SpaceInvaders.Presenters;
-using System.Collections.Generic;
 
 namespace SpaceInvaders.Services
 {
     public class EnemySpawner : IEnemySpawner
     {
-        readonly EnemyPresenter.Factory _factory;
-        readonly EnemyConfig _enemyConfig;
-
-        public List<EnemyPresenter> Enemies { get; private set; } = new List<EnemyPresenter>();
+        private readonly EnemyConfig _enemyConfig;
+        private readonly EnemyPresenter.Factory _factory;
 
         public EnemySpawner(EnemyPresenter.Factory factory, EnemyConfig enemyConfig)
         {
@@ -18,30 +16,33 @@ namespace SpaceInvaders.Services
             _enemyConfig = enemyConfig;
         }
 
+        public List<EnemyPresenter> Enemies { get; } = new();
+
         public void SpawnAll()
         {
             // Spawn enemies
-            for (int col = 0; col < _enemyConfig.Columns; col++)
+            for (var col = 0; col < _enemyConfig.Columns; col++)
+            for (var row = 0; row < _enemyConfig.Rows; row++)
             {
-                for (int row = 0; row < _enemyConfig.Rows; row++)
-                {
-                    // Calculate enemy type based on row
-                    int type = row <= 1 ? 0 : row <= 3 ? 1 : 2;
+                // Calculate enemy type based on row
+                var type =
+                    row <= 1
+                        ? 0
+                        : row <= 3
+                            ? 1
+                            : 2;
 
-                    // Spawn and init enemy
-                    EnemyPresenter enemy = _factory.Create(type, row, col);
-                    Enemies.Add(enemy);
-                }
+                // Spawn and init enemy
+                var enemy = _factory.Create(type, row, col);
+                Enemies.Add(enemy);
             }
         }
 
         public void DespawnAll()
         {
             // Despawn enemies
-            for (int i = 0; i < Enemies.Count; i++)
-            {
+            for (var i = 0; i < Enemies.Count; i++)
                 Enemies[i].Dispose();
-            }
 
             // Clear list
             Enemies.Clear();
@@ -51,9 +52,7 @@ namespace SpaceInvaders.Services
         {
             // Handle error
             if (enemy == null || !Enemies.Contains(enemy))
-            {
                 return;
-            }
 
             // Despawn enemy
             enemy.Dispose();

@@ -8,10 +8,17 @@ namespace SpaceInvaders.Installers
     [CreateAssetMenu(fileName = "GameConfigInstaller", menuName = "Installers/GameConfigInstaller")]
     public class GameConfigInstaller : ScriptableObjectInstaller<GameConfigInstaller>
     {
-        [SerializeField] PlayerConfig _player;
-        [SerializeField] EnemyConfig _enemy;
-        [SerializeField] LevelConfig _level;
-        [SerializeField] AudioConfig _audio;
+        [SerializeField]
+        private PlayerConfig _player;
+
+        [SerializeField]
+        private EnemyConfig _enemy;
+
+        [SerializeField]
+        private LevelConfig _level;
+
+        [SerializeField]
+        private AudioConfig _audio;
 
         public override void InstallBindings()
         {

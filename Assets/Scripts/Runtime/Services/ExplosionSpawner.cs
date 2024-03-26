@@ -1,13 +1,13 @@
-using SpaceInvaders.Presenters;
 using System.Collections.Generic;
+using SpaceInvaders.Presenters;
 using UnityEngine;
 
 namespace SpaceInvaders.Services
 {
     public class ExplosionSpawner : IExplosionSpawner
     {
-        readonly ExplosionPresenter.Factory _factory;
-        readonly List<ExplosionPresenter> _explosions = new();
+        private readonly List<ExplosionPresenter> _explosions = new();
+        private readonly ExplosionPresenter.Factory _factory;
 
         public ExplosionSpawner(ExplosionPresenter.Factory factory)
         {
@@ -18,7 +18,7 @@ namespace SpaceInvaders.Services
         public void Spawn(Vector3 position)
         {
             // Spawn explosion
-            ExplosionPresenter explosion = _factory.Create(position);
+            var explosion = _factory.Create(position);
             _explosions.Add(explosion);
         }
 
@@ -26,9 +26,7 @@ namespace SpaceInvaders.Services
         {
             // Handle error
             if (explosion == null || !_explosions.Contains(explosion))
-            {
                 return;
-            }
 
             // Despawn explosion
             explosion.Dispose();
@@ -38,10 +36,8 @@ namespace SpaceInvaders.Services
         public void DespawnAll()
         {
             // Despawn explosion
-            for (int i = 0; i < _explosions.Count; i++)
-            {
+            for (var i = 0; i < _explosions.Count; i++)
                 _explosions[i].Dispose();
-            }
 
             // Clear list
             _explosions.Clear();

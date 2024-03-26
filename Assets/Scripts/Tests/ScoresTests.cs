@@ -1,9 +1,9 @@
+using System;
+using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
 using SpaceInvaders.Models;
 using SpaceInvaders.Services;
-using System;
-using System.Linq;
 using Zenject;
 
 namespace SpaceInvaders.Tests
@@ -19,18 +19,30 @@ namespace SpaceInvaders.Tests
             Container.Inject(this);
         }
 
-        [Inject] readonly ScoresModel _scores;
-        [Inject] readonly IStorageService _storageService;
+        [Inject]
+        private readonly ScoresModel _scores;
 
-        readonly Scoreboard _testScoreboard = new()
-        {
-            Items = new ScoreItem[]
+        [Inject]
+        private readonly IStorageService _storageService;
+
+        private readonly Scoreboard _testScoreboard =
+            new()
             {
-            new ScoreItem() { Score = 1230, Date = DateTime.Now.AddDays(-2).ToString("MM/dd/yyyy HH:mm") },
-            new ScoreItem() { Score = 150, Date = DateTime.Now.AddDays(-1).ToString("MM/dd/yyyy HH:mm") },
-            new ScoreItem() { Score = 90, Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm") },
-            }
-        };
+                Items = new ScoreItem[]
+                {
+                    new()
+                    {
+                        Score = 1230,
+                        Date = DateTime.Now.AddDays(-2).ToString("MM/dd/yyyy HH:mm")
+                    },
+                    new()
+                    {
+                        Score = 150,
+                        Date = DateTime.Now.AddDays(-1).ToString("MM/dd/yyyy HH:mm")
+                    },
+                    new() { Score = 90, Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm") }
+                }
+            };
 
         [Test]
         public void ScoreboardShouldNotBeNullAtStart()
@@ -57,7 +69,7 @@ namespace SpaceInvaders.Tests
         [Test]
         public void LoadShouldNotUpdateScoreboardAtStart()
         {
-            int count = _scores.Scoreboard.Count;
+            var count = _scores.Scoreboard.Count;
             _storageService.Load<Scoreboard>(Arg.Any<string>()).Returns(default(Scoreboard));
 
             _scores.Load();
@@ -72,21 +84,17 @@ namespace SpaceInvaders.Tests
 
             _scores.Load();
 
-            for (int i = 0; i < _scores.Scoreboard.Count; i++)
-            {
+            for (var i = 0; i < _scores.Scoreboard.Count; i++)
                 Assert.That(_scores.Scoreboard[i] == _testScoreboard.Items[i]);
-            }
         }
 
         [Test]
         public void AddShouldOrderItemsByScore()
         {
             foreach (var item in _testScoreboard.Items.Reverse())
-            {
                 _scores.Add(item);
-            }
 
-            Assert.That(Enumerable.SequenceEqual(_scores.Scoreboard, _testScoreboard.Items));
+            Assert.That(_scores.Scoreboard.SequenceEqual(_testScoreboard.Items));
         }
     }
 }
